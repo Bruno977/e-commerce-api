@@ -11,10 +11,10 @@ export class Admin extends User {
     // this.adminProps = adminProps;
   }
 
-  get role() {
-    return this.adminProps.role;
-  }
-  set role(role: string) {
-    this.adminProps.role = role;
-  }
+  // get role() {
+  //   return this.adminProps.role;
+  // }
+  // set role(role: string) {
+  //   this.adminProps.role = role;
+  // }
 }

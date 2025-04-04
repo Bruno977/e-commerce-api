@@ -1,17 +1,19 @@
 import { Entity } from 'src/lib/common/entities/entity';
+import { UserRole } from '../enums/user-role.enum';
 
 export interface UserProps {
   name: string;
   email: string;
   password: string;
+  role: UserRole;
   createdAt?: Date;
   updatedAt?: Date;
 }
-export abstract class User extends Entity<UserProps> {
+export class User extends Entity<UserProps> {
   protected props: UserProps;
-  constructor(props: UserProps) {
-    super(props);
-  }
+  // constructor(props: UserProps) {
+  //   super(props);
+  // }
   get name() {
     return this.props.name;
   }
@@ -29,6 +31,12 @@ export abstract class User extends Entity<UserProps> {
   }
   set password(password: string) {
     this.props.password = password;
+  }
+  get role() {
+    return this.props.role;
+  }
+  set role(role: UserRole) {
+    this.props.role = role;
   }
   get createdAt() {
     return this.props.createdAt;

@@ -58,10 +58,10 @@ export class Product extends Entity<ProductProps> {
   static create(props: ProductProps) {
     const now = new Date();
     const id = crypto.randomUUID();
-    return new Product(id, {
-      ...props,
-      createdAt: now,
-      updatedAt: now,
-    });
+    // return new Product(id, {
+    //   ...props,
+    //   createdAt: now,
+    //   updatedAt: now,
+    // });
   }
 }
