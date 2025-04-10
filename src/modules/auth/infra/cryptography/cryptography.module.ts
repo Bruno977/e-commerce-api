@@ -9,14 +9,10 @@ import { JwtService } from '@nestjs/jwt';
   providers: [
     JwtService,
     {
-      provide: Encrypt,
-      useClass: JwtEncrypt,
-    },
-    {
       provide: Hasher,
       useClass: BcryptHasher,
     },
   ],
-  exports: [Hasher, Encrypt],
+  exports: [Hasher],
 })
 export class CryptographyModule {}

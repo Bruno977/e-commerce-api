@@ -6,6 +6,11 @@ import { UserRole } from '../../domain/enums/user-role.enum';
 import { NotAllowedError } from 'src/lib/common/errors/not-allowed.error';
 import { Hasher } from '../cryptography/hasher';
 import { Injectable } from '@nestjs/common';
+import { Either, left, right } from 'src/lib/common/either/either';
+
+type ResponseRegisterUserUseCase = Promise<
+  Either<ResourceAlreadyExistsError | NotAllowedError, { user: User }>
+>;
 
 @Injectable()
 export class RegisterUserUseCase {
@@ -14,16 +19,18 @@ export class RegisterUserUseCase {
     private hasher: Hasher,
   ) {}
 
-  async execute({ email, name, password, role }: RequestRegisterUserDto) {
-    console.log('userRepository', this.userRepository);
-    console.log('hasher', this.hasher);
+  async execute({
+    email,
+    name,
+    password,
+    role,
+  }: RequestRegisterUserDto): ResponseRegisterUserUseCase {
     if (role !== UserRole.ADMIN) {
-      throw new NotAllowedError('Only admin can create users');
+      return left(new NotAllowedError('Only admin can create users'));
     }
-    console.log('role', this.userRepository);
     const userAlreadyExists = await this.userRepository.findByEmail(email);
     if (userAlreadyExists) {
-      throw new ResourceAlreadyExistsError('User already exists');
+      return left(new ResourceAlreadyExistsError('User already exists'));
     }
 
     const hashedPassword = await this.hasher.hash(password);
@@ -36,9 +43,6 @@ export class RegisterUserUseCase {
     });
 
     await this.userRepository.create(user);
-
-    return {
-      user,
-    };
+    return right({ user });
   }
 }

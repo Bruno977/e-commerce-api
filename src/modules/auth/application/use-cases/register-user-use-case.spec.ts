@@ -1,7 +1,9 @@
+import { NotAllowedError } from 'src/lib/common/errors/not-allowed.error';
 import { UserRole } from '../../domain/enums/user-role.enum';
 import { FakeHasher } from '../../test/cryptography/fake-hasher';
 import { InMemoryUserRepository } from '../../test/repositories/in-memory-user.repository';
 import { RegisterUserUseCase } from './register-user.use-case';
+import { ResourceAlreadyExistsError } from 'src/lib/common/errors/resource-already-exists.error';
 
 let userRepository: InMemoryUserRepository;
 let registerUserUseCase: RegisterUserUseCase;
@@ -38,23 +40,21 @@ describe('RegisterUserUseCase', () => {
       password: '123456',
       role: UserRole.ADMIN,
     });
-    await expect(
-      registerUserUseCase.execute({
-        email: 'admin@admin.com',
-        name: 'admin',
-        password: '123456',
-        role: UserRole.ADMIN,
-      }),
-    ).rejects.toThrow('User already exists');
+    const result = await registerUserUseCase.execute({
+      email: 'admin@admin.com',
+      name: 'admin',
+      password: '123456',
+      role: UserRole.ADMIN,
+    });
+    expect(result.value).toBeInstanceOf(ResourceAlreadyExistsError);
   });
   it('should allow admin user to create a new user', async () => {
-    await expect(
-      registerUserUseCase.execute({
-        email: 'admin@admin.com',
-        name: 'admin',
-        password: '123456',
-        role: UserRole.VIEWER,
-      }),
-    ).rejects.toThrow('Only admin can create users');
+    const result = await registerUserUseCase.execute({
+      email: 'admin@admin.com',
+      name: 'admin',
+      password: '123456',
+      role: UserRole.VIEWER,
+    });
+    expect(result.value).toBeInstanceOf(NotAllowedError);
   });
 });

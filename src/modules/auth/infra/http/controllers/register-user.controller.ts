@@ -3,6 +3,8 @@ import { RegisterUserUseCase } from 'src/modules/auth/application/use-cases/regi
 import { ValidationPipe } from '../pipes/validation-pipe';
 import { RequestRegisterUserControllerDTO } from '../dto/register-user.dto';
 import { Public } from '../../auth/public';
+import { AppError } from 'src/lib/common/errors/app-error';
+import { mapAppErrorToHttpException } from 'src/lib/common/http-exceptions/map-app-error-to-http-exception';
 
 @Controller('/accounts')
 @Public()
@@ -16,14 +18,14 @@ export class RegisterUserController {
     requestRegisterUserDto: RequestRegisterUserControllerDTO,
   ) {
     const { name, email, password, role } = requestRegisterUserDto;
-    await this.registerUserUseCase.execute({
+    const result = await this.registerUserUseCase.execute({
       name,
       email,
       password,
       role,
     });
-    return {
-      message: 'User created successfully',
-    };
+    if (result.isLeft()) {
+      throw mapAppErrorToHttpException(result.value as AppError);
+    }
   }
 }
