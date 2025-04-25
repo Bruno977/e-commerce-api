@@ -11,9 +11,6 @@ export interface UserProps {
 }
 export class User extends Entity<UserProps> {
   protected props: UserProps;
-  // constructor(props: UserProps) {
-  //   super(props);
-  // }
   get name() {
     return this.props.name;
   }
