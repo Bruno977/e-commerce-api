@@ -8,8 +8,8 @@ export class BcryptHasher implements Hasher {
     const hashed = await bcrypt.hash(value, SALT_ROUNDS);
     return hashed;
   }
-  compare(value: string, hash: string): Promise<boolean> {
-    const isMatch = bcrypt.compare(value, hash);
+  async compare(value: string, hash: string): Promise<boolean> {
+    const isMatch = await bcrypt.compare(value, hash);
     return isMatch;
   }
 }

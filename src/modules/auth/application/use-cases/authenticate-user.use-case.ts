@@ -4,6 +4,11 @@ import { Hasher } from '../cryptography/hasher';
 import { RequestAuthenticateUserDTO } from '../dtos/authenticate-user.dto';
 import { Encrypt } from '../cryptography/encrypt';
 import { Injectable } from '@nestjs/common';
+import { Either, left, right } from 'src/lib/common/either/either';
+
+type ResponseRegisterUserUseCase = Promise<
+  Either<NotAllowedError, { accessToken: string }>
+>;
 
 @Injectable()
 export class AuthenticateUserUseCase {
@@ -13,23 +18,24 @@ export class AuthenticateUserUseCase {
     private readonly encrypt: Encrypt,
   ) {}
 
-  async execute({ email, password }: RequestAuthenticateUserDTO) {
+  async execute({
+    email,
+    password,
+  }: RequestAuthenticateUserDTO): ResponseRegisterUserUseCase {
     const user = await this.userRepository.findByEmail(email);
+
     if (!user) {
-      throw new NotAllowedError('Invalid credentials');
+      return left(new NotAllowedError('Invalid credentials'));
     }
 
     const isSamePassword = await this.hasher.compare(password, user.password);
-
     if (!isSamePassword) {
-      throw new NotAllowedError('Invalid credentials');
+      return left(new NotAllowedError('Invalid credentials'));
     }
     const accessToken = await this.encrypt.encrypt({
       sub: user.id,
       role: user.role,
     });
-    return {
-      accessToken,
-    };
+    return right({ accessToken });
   }
 }

@@ -12,3 +12,15 @@ Content-Type: application/json
   "role": "admin",
   "password": "123456"
 }
+
+###
+
+# @name authenticate
+
+POST {{baseUrl}}/sessions
+Content-Type: application/json
+
+{
+  "email": "bruno@example.com.br",
+  "password": "123456"
+}

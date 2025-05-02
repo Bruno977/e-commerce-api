@@ -7,7 +7,4 @@ export class FakeHasher implements Hasher {
   async compare(plain: string, hash: string): Promise<boolean> {
     return plain.concat('-hashed') === hash;
   }
-  async encrypt(payload: Record<string, unknown>): Promise<string> {
-    return JSON.stringify(payload);
-  }
 }
