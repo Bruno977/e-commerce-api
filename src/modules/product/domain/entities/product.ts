@@ -1,67 +1,79 @@
 import { Entity } from 'src/lib/common/entities/entity';
+import { Price } from '../value-objects/price';
+import { ProductImage } from '../value-objects/product-image';
 
 interface ProductProps {
   name: string;
   description: string;
-  price: number;
+  price: Price;
+  originalPrice: Price;
   discount?: number | null;
   stock: number;
   categoryId: string;
-  imageUrls: string[];
+  imagePaths: ProductImage[];
   createdAt: Date;
   updatedAt: Date;
 }
 
 export class Product extends Entity<ProductProps> {
-  get name() {
-    return this.props.name;
-  }
-  set name(name: string) {
-    this.props.name = name;
-  }
-  get description() {
-    return this.props.description;
-  }
-  set description(description: string) {
-    this.props.description = description;
-  }
-  get price() {
-    return this.props.price;
-  }
-  set price(price: number) {
-    this.props.price = price;
-  }
-  get discount(): number | null | undefined {
-    return this.props.discount;
-  }
-  set discount(discount: number) {
-    this.props.discount = discount;
-  }
-  get stock() {
-    return this.props.stock;
-  }
-  set stock(stock: number) {
-    this.props.stock = stock;
-  }
-  get categoryId() {
-    return this.props.categoryId;
-  }
-  set categoryId(categoryId: string) {
-    this.props.categoryId = categoryId;
-  }
-  get imageUrls() {
-    return this.props.imageUrls;
-  }
-  set imageUrls(imageUrls: string[]) {
-    this.props.imageUrls = imageUrls;
-  }
   static create(props: ProductProps) {
     const now = new Date();
-    const id = crypto.randomUUID();
-    // return new Product(id, {
-    //   ...props,
-    //   createdAt: now,
-    //   updatedAt: now,
-    // });
+    return new Product({
+      ...props,
+      createdAt: now,
+      updatedAt: now,
+    });
+  }
+
+  private updateTimestamp() {
+    this.props.updatedAt = new Date();
+  }
+
+  applyDiscount(discount: number) {
+    this.props.price = this.props.originalPrice.applyDiscount(discount);
+    this.props.discount = discount;
+    this.updateTimestamp();
+  }
+  removeDiscount() {
+    this.props.price = this.props.originalPrice;
+    this.props.discount = null;
+    this.updateTimestamp();
+  }
+  updateStock(stock: number) {
+    if (stock < 0) {
+      throw new Error('Stock cannot be negative.');
+    }
+    this.props.stock = stock;
+    this.updateTimestamp();
+  }
+  updateCategory(categoryId: string) {
+    this.props.categoryId = categoryId;
+    this.updateTimestamp();
+  }
+  addImage(image: ProductImage) {
+    const exists = this.props.imagePaths.some(
+      (img) => img.imagePath === image.imagePath,
+    );
+    if (exists) {
+      throw new Error('Image with the same URL already exists.');
+    }
+    this.props.imagePaths.push(image);
+    this.updateTimestamp();
+  }
+  removeImage(imagePath: string) {
+    const index = this.props.imagePaths.findIndex(
+      (img) => img.imagePath === imagePath,
+    );
+    if (index === -1) {
+      throw new Error('Image not found.');
+    }
+    this.props.imagePaths.splice(index, 1);
+    this.updateTimestamp();
+  }
+  get originalPrice() {
+    return this.props.originalPrice.amount;
+  }
+  get discountedPrice() {
+    return this.props.price.amount;
   }
 }
