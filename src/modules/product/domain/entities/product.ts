@@ -1,6 +1,7 @@
 import { Entity } from 'src/lib/common/entities/entity';
 import { Price } from '../value-objects/price';
 import { ProductImage } from '../value-objects/product-image';
+import { left } from 'src/lib/common/either/either';
 
 interface ProductProps {
   name: string;
@@ -41,7 +42,7 @@ export class Product extends Entity<ProductProps> {
   }
   updateStock(stock: number) {
     if (stock < 0) {
-      throw new Error('Stock cannot be negative.');
+      return left(new Error('Stock cannot be negative.'));
     }
     this.props.stock = stock;
     this.updateTimestamp();
@@ -55,7 +56,7 @@ export class Product extends Entity<ProductProps> {
       (img) => img.imagePath === image.imagePath,
     );
     if (exists) {
-      throw new Error('Image with the same URL already exists.');
+      return left(new Error('Image with the same URL already exists.'));
     }
     this.props.imagePaths.push(image);
     this.updateTimestamp();
@@ -65,11 +66,12 @@ export class Product extends Entity<ProductProps> {
       (img) => img.imagePath === imagePath,
     );
     if (index === -1) {
-      throw new Error('Image not found.');
+      return left(new Error('Image not found.'));
     }
     this.props.imagePaths.splice(index, 1);
     this.updateTimestamp();
   }
+
   get originalPrice() {
     return this.props.originalPrice.amount;
   }
