@@ -1,7 +1,7 @@
 import { Entity } from 'src/lib/common/entities/entity';
 import { Slug } from '../value-objects/slug';
 import { Optional } from 'src/lib/common/types/optional';
-interface CategoryProps {
+export interface CategoryProps {
   title: string;
   description: string;
   isActive: boolean;
@@ -12,14 +12,17 @@ interface CategoryProps {
 
 export class Category extends Entity<CategoryProps> {
   static create(
-    props: Optional<CategoryProps, 'slug' | 'createdAt' | 'updatedAt'>,
+    props: Optional<
+      CategoryProps,
+      'slug' | 'createdAt' | 'updatedAt' | 'isActive'
+    >,
   ) {
     return new Category({
       ...props,
-      slug: Slug.fromTitle(props.title),
+      slug: props.slug ?? Slug.fromTitle(props.title),
       isActive: props.isActive ?? true,
-      createdAt: new Date(),
-      updatedAt: new Date(),
+      createdAt: props.createdAt ?? new Date(),
+      updatedAt: props.updatedAt ?? new Date(),
     });
   }
   get slug() {
