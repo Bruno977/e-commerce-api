@@ -11,8 +11,8 @@ interface ProductProps {
   stock: number;
   categoryId: string;
   imagePaths: ProductImage[];
-  createdAt: Date;
-  updatedAt: Date;
+  createdAt?: Date;
+  updatedAt?: Date;
 }
 
 export class Product extends Entity<ProductProps> {
@@ -75,5 +75,8 @@ export class Product extends Entity<ProductProps> {
   }
   get discountedPrice() {
     return this.props.price.amount;
+  }
+  get name() {
+    return this.props.name;
   }
 }
