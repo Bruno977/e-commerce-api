@@ -10,7 +10,7 @@ interface ProductProps {
   originalPrice: Price;
   discount?: number | null;
   stock: number;
-  categoryId: string;
+  categoryIds: string[];
   imagePaths: ProductImage[];
   createdAt?: Date;
   updatedAt?: Date;
@@ -47,10 +47,6 @@ export class Product extends Entity<ProductProps> {
     this.props.stock = stock;
     this.updateTimestamp();
   }
-  updateCategory(categoryId: string) {
-    this.props.categoryId = categoryId;
-    this.updateTimestamp();
-  }
   addImage(image: ProductImage) {
     const exists = this.props.imagePaths.some(
       (img) => img.imagePath === image.imagePath,
@@ -72,6 +68,23 @@ export class Product extends Entity<ProductProps> {
     this.updateTimestamp();
   }
 
+  addCategory(categoryId: string) {
+    if (this.props.categoryIds.includes(categoryId)) {
+      return left(new Error('Category already associated with this product.'));
+    }
+    this.props.categoryIds.push(categoryId);
+    this.updateTimestamp();
+  }
+
+  removeCategory(categoryId: string) {
+    const index = this.props.categoryIds.indexOf(categoryId);
+    if (index === -1) {
+      return left(new Error('Category not associated with this product.'));
+    }
+    this.props.categoryIds.splice(index, 1);
+    this.updateTimestamp();
+  }
+
   get originalPrice() {
     return this.props.originalPrice.amount;
   }
@@ -80,5 +93,8 @@ export class Product extends Entity<ProductProps> {
   }
   get name() {
     return this.props.name;
+  }
+  get categoriesIds() {
+    return this.props.categoryIds;
   }
 }

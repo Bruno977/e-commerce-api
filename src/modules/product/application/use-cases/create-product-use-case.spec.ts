@@ -13,7 +13,7 @@ describe('CreateProductUseCase', () => {
     const productData = {
       name: 'Test Product',
       description: 'Test Description',
-      categoryId: '123',
+      categoryIds: ['123', '456'],
       images: [{ path: 'image.jpg', alt: 'Test Image' }],
       originalPrice: 100,
       price: 80,

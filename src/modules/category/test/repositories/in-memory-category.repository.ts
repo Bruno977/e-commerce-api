@@ -18,4 +18,10 @@ export class InMemoryCategoryRepository implements CategoryRepository {
       null
     );
   }
+  async remove(id: string): Promise<void> {
+    const index = this.categories.findIndex((category) => category.id === id);
+    if (index !== -1) {
+      this.categories.splice(index, 1);
+    }
+  }
 }

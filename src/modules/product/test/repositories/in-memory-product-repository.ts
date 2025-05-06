@@ -16,4 +16,13 @@ export class InMemoryProductRepository implements ProductRepository {
     }
     return product;
   }
+  async findByCategoryId(categoryId: string): Promise<Product[] | null> {
+    const products = this.products.filter((product) =>
+      product.categoriesIds.includes(categoryId),
+    );
+    if (!products) {
+      return null;
+    }
+    return products;
+  }
 }

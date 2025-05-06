@@ -21,7 +21,7 @@ export class CreateProductUseCase {
   async execute({
     name,
     description,
-    categoryId,
+    categoryIds,
     images,
     originalPrice,
     price,
@@ -38,7 +38,7 @@ export class CreateProductUseCase {
     const newProduct = Product.create({
       name,
       description,
-      categoryId,
+      categoryIds,
       originalPrice: new Price(originalPrice),
       price: new Price(price),
       imagePaths: productImages,

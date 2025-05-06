@@ -12,6 +12,6 @@ export interface ICreateProduct {
   originalPrice: number;
   discount?: number | null;
   stock: number;
-  categoryId: string;
+  categoryIds: string[];
   images: ImageProps[];
 }
