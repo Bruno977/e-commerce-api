@@ -25,7 +25,32 @@ export class Category extends Entity<CategoryProps> {
       updatedAt: props.updatedAt ?? new Date(),
     });
   }
+  private updateTimestamps() {
+    this.props.updatedAt = new Date();
+  }
+  get title() {
+    return this.props.title;
+  }
+  get description() {
+    return this.props.description;
+  }
+  get isActive() {
+    return this.props.isActive;
+  }
   get slug() {
     return this.props.slug;
+  }
+  updateTitle(title: string) {
+    this.props.title = title;
+    this.props.slug = Slug.fromTitle(title);
+    this.updateTimestamps();
+  }
+  updateDescription(description: string) {
+    this.props.description = description;
+    this.updateTimestamps();
+  }
+  updateIsActive(isActive: boolean) {
+    this.props.isActive = isActive;
+    this.updateTimestamps();
   }
 }

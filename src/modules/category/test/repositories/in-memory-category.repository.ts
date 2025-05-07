@@ -24,4 +24,13 @@ export class InMemoryCategoryRepository implements CategoryRepository {
       this.categories.splice(index, 1);
     }
   }
+  async update(category: Category): Promise<Category> {
+    const index = this.categories.findIndex(
+      (existingCategory) => existingCategory.id === category.id,
+    );
+    if (index !== -1) {
+      this.categories[index] = category;
+    }
+    return category;
+  }
 }
