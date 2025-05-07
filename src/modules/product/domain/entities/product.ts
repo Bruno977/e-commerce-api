@@ -3,7 +3,7 @@ import { Price } from '../value-objects/price';
 import { ProductImage } from '../value-objects/product-image';
 import { left } from 'src/lib/common/either/either';
 
-interface ProductProps {
+export interface ProductProps {
   name: string;
   description: string;
   price: Price;
