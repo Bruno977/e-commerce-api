@@ -88,13 +88,25 @@ export class Product extends Entity<ProductProps> {
   get originalPrice() {
     return this.props.originalPrice.amount;
   }
-  get discountedPrice() {
+  get currentPrice() {
     return this.props.price.amount;
+  }
+  get stock() {
+    return this.props.stock;
+  }
+  get discount() {
+    return this.props.discount;
   }
   get name() {
     return this.props.name;
   }
+  get description() {
+    return this.props.description;
+  }
   get categoriesIds() {
     return this.props.categoryIds;
+  }
+  get images() {
+    return this.props.imagePaths;
   }
 }

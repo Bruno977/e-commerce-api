@@ -2,6 +2,7 @@ import { faker } from '@faker-js/faker/.';
 import { Product, ProductProps } from '../../domain/entities/product';
 import { Price } from '../../domain/value-objects/price';
 import { ProductImage } from '../../domain/value-objects/product-image';
+import { ICreateProduct } from '../../application/interfaces/create-product';
 
 export function makeFakeProduct(override: Partial<ProductProps> = {}) {
   const newProduct = Product.create({
@@ -20,4 +21,22 @@ export function makeFakeProduct(override: Partial<ProductProps> = {}) {
     ...override,
   });
   return newProduct;
+}
+export function makeFakeProductData(override: Partial<ICreateProduct> = {}) {
+  const product = {
+    name: faker.commerce.productName(),
+    description: faker.commerce.productDescription(),
+    price: parseFloat(faker.commerce.price()),
+    discount: faker.number.int({ min: 1, max: 100 }),
+    stock: faker.number.int({ min: 0, max: 100 }),
+    images: [
+      {
+        path: faker.image.url(),
+        alt: faker.commerce.productName(),
+      },
+    ],
+    categoryIds: [faker.string.uuid()],
+    ...override,
+  };
+  return product;
 }

@@ -33,4 +33,10 @@ export class InMemoryCategoryRepository implements CategoryRepository {
     }
     return category;
   }
+  async findByIds(ids: string[]): Promise<Category[] | null> {
+    const categories = this.categories.filter((category) =>
+      ids.includes(category.id),
+    );
+    return categories.length > 0 ? categories : null;
+  }
 }
