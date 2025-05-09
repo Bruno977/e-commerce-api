@@ -23,7 +23,7 @@ describe('CreateProductUseCase', () => {
 
     const newProduct = makeFakeProductData({
       price: 80,
-      categoryIds: [newCategory.id],
+      categoryIds: [newCategory.id.value],
     });
 
     const expectedPrice =

@@ -10,7 +10,7 @@ export class InMemoryCategoryRepository implements CategoryRepository {
   }
 
   async findById(id: string): Promise<Category | null> {
-    return this.categories.find((category) => category.id === id) ?? null;
+    return this.categories.find((category) => category.id.value === id) ?? null;
   }
   async findBySlug(slug: string): Promise<Category | null> {
     return (
@@ -19,7 +19,9 @@ export class InMemoryCategoryRepository implements CategoryRepository {
     );
   }
   async remove(id: string): Promise<void> {
-    const index = this.categories.findIndex((category) => category.id === id);
+    const index = this.categories.findIndex(
+      (category) => category.id.value === id,
+    );
     if (index !== -1) {
       this.categories.splice(index, 1);
     }
@@ -35,7 +37,7 @@ export class InMemoryCategoryRepository implements CategoryRepository {
   }
   async findByIds(ids: string[]): Promise<Category[] | null> {
     const categories = this.categories.filter((category) =>
-      ids.includes(category.id),
+      ids.includes(category.id.value),
     );
     return categories.length > 0 ? categories : null;
   }

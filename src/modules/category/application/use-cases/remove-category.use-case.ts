@@ -34,7 +34,7 @@ export class RemoveCategoryUseCase {
       );
     }
 
-    await this.categoryRepository.remove(category.id);
+    await this.categoryRepository.remove(category.id.value);
     return right(null);
   }
 }

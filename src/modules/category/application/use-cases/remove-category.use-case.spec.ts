@@ -23,7 +23,7 @@ describe('RemoveCategoryUseCase', () => {
     await inMemoryCategoryRepository.create(newCategory);
 
     const result = await sut.execute({
-      categoryId: newCategory.id,
+      categoryId: newCategory.id.value,
     });
     expect(result.isRight()).toBeTruthy();
   });
@@ -39,12 +39,12 @@ describe('RemoveCategoryUseCase', () => {
     await inMemoryCategoryRepository.create(newCategory);
 
     const newProduct = makeFakeProduct({
-      categoryIds: [newCategory.id],
+      categoryIds: [newCategory.id.value],
     });
     await inMemoryProductRepository.create(newProduct);
 
     const result = await sut.execute({
-      categoryId: newCategory.id,
+      categoryId: newCategory.id.value,
     });
     expect(result.isLeft()).toBeTruthy();
     expect(result.value).toBeInstanceOf(NotAllowedError);

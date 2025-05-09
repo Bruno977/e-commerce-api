@@ -1,5 +1,7 @@
+import { Id } from './id';
+
 export abstract class Entity<Props> {
-  private _id: string;
+  private _id: Id;
   protected props: Props;
 
   get id() {
@@ -7,7 +9,7 @@ export abstract class Entity<Props> {
   }
 
   constructor(props: Props, id?: string) {
-    this._id = id ?? crypto.randomUUID();
+    this._id = Id.create(id);
     this.props = props;
   }
 }
