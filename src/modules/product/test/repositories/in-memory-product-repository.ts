@@ -28,4 +28,13 @@ export class InMemoryProductRepository implements ProductRepository {
   async findAll(): Promise<Product[]> {
     return this.products;
   }
+  async remove(productId: string): Promise<void> {
+    const productIndex = this.products.findIndex(
+      (product) => product.id.value === productId,
+    );
+    if (productIndex === -1) {
+      return;
+    }
+    this.products.splice(productIndex, 1);
+  }
 }
