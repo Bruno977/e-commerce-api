@@ -29,7 +29,46 @@ export class Product extends Entity<ProductProps> {
   private updateTimestamp() {
     this.props.updatedAt = new Date();
   }
-
+  get originalPrice() {
+    return this.props.originalPrice.amount;
+  }
+  get currentPrice() {
+    return this.props.price.amount;
+  }
+  get stock() {
+    return this.props.stock;
+  }
+  get discount() {
+    return this.props.discount;
+  }
+  get name() {
+    return this.props.name;
+  }
+  get description() {
+    return this.props.description;
+  }
+  get categoriesIds() {
+    return this.props.categoryIds;
+  }
+  get images() {
+    return this.props.imagePaths;
+  }
+  updateDescription(description: string) {
+    this.props.description = description;
+    this.updateTimestamp();
+  }
+  updateName(name: string) {
+    this.props.name = name;
+    this.updateTimestamp();
+  }
+  updateOriginalPrice(price: number) {
+    this.props.originalPrice = new Price(price);
+    this.updateTimestamp();
+  }
+  updatePrice(price: number) {
+    this.props.price = new Price(price);
+    this.updateTimestamp();
+  }
   applyDiscount(discount: number) {
     this.props.price = this.props.originalPrice.applyDiscount(discount);
     this.props.discount = discount;
@@ -83,30 +122,5 @@ export class Product extends Entity<ProductProps> {
     }
     this.props.categoryIds.splice(index, 1);
     this.updateTimestamp();
-  }
-
-  get originalPrice() {
-    return this.props.originalPrice.amount;
-  }
-  get currentPrice() {
-    return this.props.price.amount;
-  }
-  get stock() {
-    return this.props.stock;
-  }
-  get discount() {
-    return this.props.discount;
-  }
-  get name() {
-    return this.props.name;
-  }
-  get description() {
-    return this.props.description;
-  }
-  get categoriesIds() {
-    return this.props.categoryIds;
-  }
-  get images() {
-    return this.props.imagePaths;
   }
 }

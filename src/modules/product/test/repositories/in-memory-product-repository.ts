@@ -25,9 +25,11 @@ export class InMemoryProductRepository implements ProductRepository {
     }
     return products;
   }
+
   async findAll(): Promise<Product[]> {
     return this.products;
   }
+
   async remove(productId: string): Promise<void> {
     const productIndex = this.products.findIndex(
       (product) => product.id.value === productId,
@@ -36,5 +38,16 @@ export class InMemoryProductRepository implements ProductRepository {
       return;
     }
     this.products.splice(productIndex, 1);
+  }
+
+  async update(product: Product): Promise<Product> {
+    const productIndex = this.products.findIndex(
+      (p) => p.id.value === product.id.value,
+    );
+    if (productIndex === -1) {
+      this.products[productIndex] = product;
+    }
+    this.products[productIndex] = product;
+    return product;
   }
 }
