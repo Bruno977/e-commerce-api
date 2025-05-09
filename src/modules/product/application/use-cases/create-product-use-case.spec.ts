@@ -22,12 +22,10 @@ describe('CreateProductUseCase', () => {
     await inMemoryCategoryRepository.create(newCategory);
 
     const newProduct = makeFakeProductData({
-      price: 80,
+      price: 100,
+      discount: 10,
       categoryIds: [newCategory.id.value],
     });
-
-    const expectedPrice =
-      newProduct.price - (newProduct.price * (newProduct.discount ?? 0)) / 100;
 
     const result = await sut.execute(newProduct);
     expect(result.isRight()).toBe(true);
@@ -35,13 +33,31 @@ describe('CreateProductUseCase', () => {
     const product = inMemoryProductRepository.products[0];
     expect(product.name).toBe(newProduct.name);
     expect(product.description).toBe(newProduct.description);
-    expect(product.originalPrice).toBe(newProduct.price);
-    expect(product.currentPrice).toBe(expectedPrice);
+    expect(product.originalPrice).toBe(100);
+    expect(product.currentPrice).toBe(90);
     expect(product.stock).toBe(newProduct.stock);
-    expect(product.discount).toBe(newProduct.discount);
+    expect(product.discount).toBe(10);
     expect(product.images[0].imagePath).toBe(newProduct.images[0].path);
     expect(product.images[0].altText).toBe(newProduct.images[0].alt);
     expect(product.categoriesIds).toEqual(newProduct.categoryIds);
+  });
+  it('should create a product with no discount', async () => {
+    const newCategory = makeFakeCategory();
+    await inMemoryCategoryRepository.create(newCategory);
+
+    const newProduct = makeFakeProductData({
+      price: 100,
+      discount: null,
+      categoryIds: [newCategory.id.value],
+    });
+
+    const result = await sut.execute(newProduct);
+    expect(result.isRight()).toBe(true);
+
+    const product = inMemoryProductRepository.products[0];
+    expect(product.originalPrice).toBe(100);
+    expect(product.currentPrice).toBe(100);
+    expect(product.discount).toBe(null);
   });
   it('should not create a product if not exists category', async () => {
     const newProduct = makeFakeProductData();
