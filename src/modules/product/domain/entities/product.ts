@@ -107,7 +107,7 @@ export class Product extends Entity<ProductProps> {
     this.updateTimestamp();
   }
 
-  addCategory(categoryId: string) {
+  addCategoryToProduct(categoryId: string) {
     if (this.props.categoryIds.includes(categoryId)) {
       return left(new Error('Category already associated with this product.'));
     }
@@ -115,7 +115,7 @@ export class Product extends Entity<ProductProps> {
     this.updateTimestamp();
   }
 
-  removeCategory(categoryId: string) {
+  removeCategoryFromProduct(categoryId: string) {
     const index = this.props.categoryIds.indexOf(categoryId);
     if (index === -1) {
       return left(new Error('Category not associated with this product.'));
