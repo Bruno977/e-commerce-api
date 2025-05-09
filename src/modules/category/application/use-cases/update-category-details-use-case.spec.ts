@@ -20,7 +20,7 @@ describe('UpdateCategoryDetailsUseCase', () => {
     expect(oldCategory.slug.getValue()).toBe(newCategory.slug.getValue());
 
     await sut.execute({
-      id: newCategory.id.value,
+      id: newCategory.id.toString(),
       title: 'Updated Title',
       description: 'Updated Description',
       isActive: false,

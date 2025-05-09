@@ -10,7 +10,9 @@ export class InMemoryProductRepository implements ProductRepository {
   }
 
   async findById(id: string): Promise<Product | null> {
-    const product = this.products.find((product) => product.id.value === id);
+    const product = this.products.find(
+      (product) => product.id.toString() === id,
+    );
     if (!product) {
       return null;
     }
@@ -32,7 +34,7 @@ export class InMemoryProductRepository implements ProductRepository {
 
   async remove(productId: string): Promise<void> {
     const productIndex = this.products.findIndex(
-      (product) => product.id.value === productId,
+      (product) => product.id.toString() === productId,
     );
     if (productIndex === -1) {
       return;
@@ -42,7 +44,7 @@ export class InMemoryProductRepository implements ProductRepository {
 
   async update(product: Product): Promise<Product> {
     const productIndex = this.products.findIndex(
-      (p) => p.id.value === product.id.value,
+      (p) => p.id.toString() === product.id.toString(),
     );
     if (productIndex === -1) {
       this.products[productIndex] = product;

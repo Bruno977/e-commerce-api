@@ -14,7 +14,7 @@ describe('RemoveProductUseCase', () => {
   it('should be able to remove a product', async () => {
     const product = makeFakeProduct();
     await inMemoryProductRepository.create(product);
-    const result = await sut.execute(product.id.value);
+    const result = await sut.execute(product.id.toString());
     expect(result.isRight()).toBeTruthy();
     expect(inMemoryProductRepository.products).toHaveLength(0);
   });

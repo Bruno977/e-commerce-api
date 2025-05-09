@@ -13,7 +13,7 @@ describe('FindCategoryByIdUseCase', () => {
   it('should return a category when it exists', async () => {
     const category = makeFakeCategory();
     await inMemoryCategoryRepository.create(category);
-    const result = await sut.execute(category.id.value);
+    const result = await sut.execute(category.id.toString());
     expect(result.isRight()).toBeTruthy();
     expect(result.value).toEqual({
       category,

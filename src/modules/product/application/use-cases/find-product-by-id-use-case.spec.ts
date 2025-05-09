@@ -13,7 +13,7 @@ describe('FindProductByIdUseCase', () => {
   it('should be able to find a product by id', async () => {
     const product = makeFakeProduct();
     await inMemoryProductRepository.create(product);
-    const result = await sut.execute(product.id.value);
+    const result = await sut.execute(product.id.toString());
     expect(result.isRight()).toBeTruthy();
     const productCreated = inMemoryProductRepository.products[0];
     expect(productCreated.name).toBe(product.name);

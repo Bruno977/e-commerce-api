@@ -24,7 +24,7 @@ describe('CreateProductUseCase', () => {
     const newProduct = makeFakeProductData({
       price: 100,
       discount: 10,
-      categoryIds: [newCategory.id.value],
+      categoryIds: [newCategory.id.toString()],
     });
 
     const result = await sut.execute(newProduct);
@@ -48,7 +48,7 @@ describe('CreateProductUseCase', () => {
     const newProduct = makeFakeProductData({
       price: 100,
       discount: null,
-      categoryIds: [newCategory.id.value],
+      categoryIds: [newCategory.id.toString()],
     });
 
     const result = await sut.execute(newProduct);

@@ -27,7 +27,7 @@ describe('AddCategoryToProductUseCase', () => {
 
     const newProduct = await inMemoryProductRepository.create(
       makeFakeProduct({
-        categoryIds: [newCategory.id.value, newCategory2.id.value],
+        categoryIds: [newCategory.id.toString(), newCategory2.id.toString()],
       }),
     );
 
@@ -38,14 +38,14 @@ describe('AddCategoryToProductUseCase', () => {
     );
 
     await sut.execute({
-      productId: newProduct.id.value,
-      categoryId: newCategory3.id.value,
+      productId: newProduct.id.toString(),
+      categoryId: newCategory3.id.toString(),
     });
     const product = inMemoryProductRepository.products[0];
 
-    expect(product.categoriesIds).toContain(newCategory3.id.value);
-    expect(product.categoriesIds).toContain(newCategory2.id.value);
-    expect(product.categoriesIds).toContain(newCategory.id.value);
+    expect(product.categoriesIds).toContain(newCategory3.id.toString());
+    expect(product.categoriesIds).toContain(newCategory2.id.toString());
+    expect(product.categoriesIds).toContain(newCategory.id.toString());
   });
   it("should not be able to add a category to a product that doesn't exist", async () => {
     const newCategory =
@@ -53,7 +53,7 @@ describe('AddCategoryToProductUseCase', () => {
 
     const result = await sut.execute({
       productId: 'non-existing-product-id',
-      categoryId: newCategory.id.value,
+      categoryId: newCategory.id.toString(),
     });
 
     expect(result.isLeft()).toBe(true);
@@ -64,7 +64,7 @@ describe('AddCategoryToProductUseCase', () => {
       await inMemoryProductRepository.create(makeFakeProduct());
 
     const result = await sut.execute({
-      productId: newProduct.id.value,
+      productId: newProduct.id.toString(),
       categoryId: 'non-existing-category-id',
     });
 

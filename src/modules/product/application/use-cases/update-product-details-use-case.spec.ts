@@ -14,7 +14,7 @@ describe('UpdateProductDetailsUseCase', () => {
     const newProduct = makeFakeProduct();
     await inMemoryProductRepository.create(newProduct);
     const result = await sut.execute({
-      id: newProduct.id.value,
+      id: newProduct.id.toString(),
       name: 'updated name',
       description: 'updated description',
       price: 100,
@@ -36,7 +36,7 @@ describe('UpdateProductDetailsUseCase', () => {
     });
     await inMemoryProductRepository.create(newProduct);
     const result = await sut.execute({
-      id: newProduct.id.value,
+      id: newProduct.id.toString(),
       price: 200,
     });
     expect(result.isRight()).toBeTruthy();
