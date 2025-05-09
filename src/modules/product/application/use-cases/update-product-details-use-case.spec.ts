@@ -1,6 +1,7 @@
 import { InMemoryProductRepository } from '../../test/repositories/in-memory-product-repository';
 import { UpdateProductDetailsUseCase } from './update-product-details.use-case';
 import { makeFakeProduct } from '../../test/factories/make-fake-product';
+import { ResourceNotFoundError } from 'src/lib/common/errors/resource-not-found.error';
 
 let sut: UpdateProductDetailsUseCase;
 let inMemoryProductRepository: InMemoryProductRepository;
@@ -43,5 +44,12 @@ describe('UpdateProductDetailsUseCase', () => {
     expect(productUpdated.originalPrice).toBe(200);
     expect(productUpdated.currentPrice).toBe(180);
     expect(productUpdated.discount).toBe(10);
+  });
+  it("should not be able to update a product if it doesn't exist", async () => {
+    const result = await sut.execute({
+      id: 'non-existing-id',
+    });
+    expect(result.isLeft()).toBeTruthy();
+    expect(result.value).toBeInstanceOf(ResourceNotFoundError);
   });
 });
