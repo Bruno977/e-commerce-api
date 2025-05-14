@@ -1,4 +1,4 @@
-interface ImageProps {
+export interface ImageProps {
   path: string;
   alt: string;
 }

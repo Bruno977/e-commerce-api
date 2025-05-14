@@ -2,6 +2,7 @@ import { Entity } from 'src/lib/common/entities/entity';
 import { Price } from '../value-objects/price';
 import { ProductImage } from '../value-objects/product-image';
 import { left } from 'src/lib/common/either/either';
+import { ImageProps } from '../../application/interfaces/create-product';
 
 export interface ProductProps {
   name: string;
@@ -86,14 +87,10 @@ export class Product extends Entity<ProductProps> {
     this.props.stock = stock;
     this.updateTimestamp();
   }
-  addImage(image: ProductImage) {
-    const exists = this.props.imagePaths.some(
-      (img) => img.imagePath === image.imagePath,
-    );
-    if (exists) {
-      return left(new Error('Image with the same URL already exists.'));
-    }
-    this.props.imagePaths.push(image);
+  addImages(images: ImageProps[]) {
+    images.forEach((image) => {
+      this.props.imagePaths.push(new ProductImage(image.path, image.alt));
+    });
     this.updateTimestamp();
   }
   removeImage(imagePath: string) {
