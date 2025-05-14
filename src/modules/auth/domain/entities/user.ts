@@ -11,6 +11,14 @@ export interface UserProps {
 }
 export class User extends Entity<UserProps> {
   protected props: UserProps;
+  static create(props: UserProps) {
+    const user = new User({
+      ...props,
+      createdAt: props.createdAt ?? new Date(),
+      updatedAt: props.updatedAt ?? new Date(),
+    });
+    return user;
+  }
   get name() {
     return this.props.name;
   }

@@ -4,9 +4,8 @@ import { CategoryRepository } from '../../domain/repositories/category.repositor
 export class InMemoryCategoryRepository implements CategoryRepository {
   public categories: Category[] = [];
 
-  async create(category: Category): Promise<Category> {
+  async create(category: Category): Promise<void> {
     this.categories.push(category);
-    return category;
   }
 
   async findById(id: string): Promise<Category | null> {
@@ -28,14 +27,13 @@ export class InMemoryCategoryRepository implements CategoryRepository {
       this.categories.splice(index, 1);
     }
   }
-  async update(category: Category): Promise<Category> {
+  async update(category: Category): Promise<void> {
     const index = this.categories.findIndex(
       (existingCategory) => existingCategory.id === category.id,
     );
     if (index !== -1) {
       this.categories[index] = category;
     }
-    return category;
   }
   async findByIds(ids: string[]): Promise<Category[] | null> {
     const categories = this.categories.filter((category) =>
