@@ -1,7 +1,7 @@
 import { makeFakeProduct } from 'src/modules/product/test/factories/make-fake-product';
 import { InMemoryProductRepository } from '../../test/repositories/in-memory-product-repository';
 import { ResourceNotFoundError } from 'src/lib/common/errors/resource-not-found.error';
-import { AddImageUseCase } from './add-image.use-case';
+import { AddImageUseCase } from './add-image-to-product.use-case';
 
 let sut: AddImageUseCase;
 let inMemoryProductRepository: InMemoryProductRepository;
