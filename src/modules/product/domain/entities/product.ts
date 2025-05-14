@@ -1,8 +1,9 @@
 import { Entity } from 'src/lib/common/entities/entity';
 import { Price } from '../value-objects/price';
 import { ProductImage } from '../value-objects/product-image';
-import { left } from 'src/lib/common/either/either';
+import { Either, left, right } from 'src/lib/common/either/either';
 import { ImageProps } from '../../application/interfaces/create-product';
+import { ResourceNotFoundError } from 'src/lib/common/errors/resource-not-found.error';
 
 export interface ProductProps {
   name: string;
@@ -93,15 +94,28 @@ export class Product extends Entity<ProductProps> {
     });
     this.updateTimestamp();
   }
-  removeImage(imagePath: string) {
-    const index = this.props.imagePaths.findIndex(
-      (img) => img.imagePath === imagePath,
+  removeImages(imagesPaths: string[]): Either<ResourceNotFoundError, void> {
+    const notFoundImages = imagesPaths.filter(
+      (imageToRemove) =>
+        !this.props.imagePaths.some(
+          (image) => image.imagePath === imageToRemove,
+        ),
     );
-    if (index === -1) {
-      return left(new Error('Image not found.'));
+
+    if (notFoundImages.length > 0) {
+      return left(
+        new ResourceNotFoundError(
+          `Images not found: ${notFoundImages.join(', ')}`,
+        ),
+      );
     }
-    this.props.imagePaths.splice(index, 1);
+
+    this.props.imagePaths = this.props.imagePaths.filter(
+      (image) => !imagesPaths.includes(image.imagePath),
+    );
+
     this.updateTimestamp();
+    return right(undefined);
   }
 
   addCategoryToProduct(categoryId: string) {
