@@ -17,7 +17,6 @@ export class CreateCategoryController {
     @CurrentUser() user: JwtPayload,
   ) {
     const { title, description, isActive } = body;
-    console.log('user role', user);
     const result = await this.createCategory.execute({
       title,
       description,

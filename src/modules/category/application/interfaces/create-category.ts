@@ -4,6 +4,6 @@ export interface ICreateCategory {
   title: string;
   description: string;
   isActive: boolean;
-  role: UserRole;
   slug?: string;
+  role: UserRole;
 }
