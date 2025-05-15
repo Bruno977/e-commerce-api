@@ -3,6 +3,11 @@ import { Injectable, UnauthorizedException } from '@nestjs/common';
 import { ExtractJwt, Strategy } from 'passport-jwt';
 import { ConfigService } from '@nestjs/config';
 
+export interface JwtPayload {
+  sub: string;
+  role: string;
+}
+
 @Injectable()
 export class JwtStrategy extends PassportStrategy(Strategy) {
   constructor(configService: ConfigService) {
@@ -13,12 +18,11 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
       secretOrKey: secret,
     });
   }
-
-  async validate(payload: any): Promise<any> {
-    console.log('Payload received in JwtStrategy:', payload); // Log do payload
+  async validate(payload: JwtPayload) {
     if (!payload) {
       throw new UnauthorizedException('Invalid token');
     }
+    console.log('JWT payload:', payload);
 
     return payload;
   }

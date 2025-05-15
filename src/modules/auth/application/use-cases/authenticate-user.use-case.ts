@@ -33,7 +33,7 @@ export class AuthenticateUserUseCase {
       return left(new NotAllowedError('Invalid credentials'));
     }
     const accessToken = await this.encrypt.encrypt({
-      sub: user.id,
+      sub: user.id.toString(),
       role: user.role,
     });
     return right({ accessToken });

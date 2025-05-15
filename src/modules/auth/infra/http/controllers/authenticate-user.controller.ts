@@ -2,7 +2,7 @@ import { Body, Controller, HttpCode, Post } from '@nestjs/common';
 import { AuthenticateUserUseCase } from 'src/modules/auth/application/use-cases/authenticate-user.use-case';
 import { AuthenticateUserDto } from '../dto/authenticate-user.dto';
 import { Public } from '../../auth/public';
-import { ValidationPipe } from '../pipes/validation-pipe';
+import { ValidationPipe } from '../../../../../lib/common/infra/pipes/validation-pipe';
 import { mapAppErrorToHttpException } from 'src/lib/common/http-exceptions/map-app-error-to-http-exception';
 
 @Controller('/sessions')

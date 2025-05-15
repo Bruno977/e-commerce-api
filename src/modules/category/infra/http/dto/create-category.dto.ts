@@ -1,8 +1,12 @@
-import { UserRole } from 'src/modules/auth/domain/enums/user-role.enum';
+import { IsBoolean, IsString } from 'class-validator';
 
 export class CreateCategoryDTO {
+  @IsString()
   title: string;
+
+  @IsString()
   description: string;
-  isActive: boolean;
-  role: UserRole;
+
+  @IsBoolean()
+  isActive: boolean = true;
 }

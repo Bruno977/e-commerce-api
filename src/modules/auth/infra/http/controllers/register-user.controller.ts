@@ -1,6 +1,6 @@
 import { Body, Controller, HttpCode, Post } from '@nestjs/common';
 import { RegisterUserUseCase } from 'src/modules/auth/application/use-cases/register-user.use-case';
-import { ValidationPipe } from '../pipes/validation-pipe';
+import { ValidationPipe } from '../../../../../lib/common/infra/pipes/validation-pipe';
 import { RequestRegisterUserControllerDTO } from '../dto/register-user.dto';
 import { Public } from '../../auth/public';
 import { mapAppErrorToHttpException } from 'src/lib/common/http-exceptions/map-app-error-to-http-exception';

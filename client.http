@@ -1,5 +1,5 @@
 @baseUrl = http://localhost:3333
-# @authToken = {{authenticate.response.body.access_token}}
+@authToken = {{authenticate.response.body.access_token}}
 
 
 # @name create_account
@@ -23,4 +23,16 @@ Content-Type: application/json
 {
   "email": "bruno@example.com.br",
   "password": "123456"
+}
+
+###
+
+# @name create_category
+POST {{baseUrl}}/categories
+Content-Type: application/json
+Authorization: Bearer {{authToken}}
+
+{
+  "title": "Category 1",
+  "description": "Description of category 1"
 }
