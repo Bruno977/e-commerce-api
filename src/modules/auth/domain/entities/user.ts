@@ -1,16 +1,19 @@
 import { Entity } from 'src/lib/common/entities/entity';
-import { UserRole } from '../enums/user-role.enum';
+import { Email } from '../value-objects/email';
+import { Password } from '../value-objects/password';
+import { Role } from '../value-objects/role';
 
 export interface UserProps {
   name: string;
-  email: string;
-  password: string;
-  role: UserRole;
+  email: Email;
+  password: Password;
+  role: Role;
   createdAt?: Date;
   updatedAt?: Date;
 }
 export class User extends Entity<UserProps> {
   protected props: UserProps;
+
   static create(props: UserProps) {
     const user = new User({
       ...props,
@@ -19,6 +22,7 @@ export class User extends Entity<UserProps> {
     });
     return user;
   }
+
   get name() {
     return this.props.name;
   }
@@ -28,25 +32,10 @@ export class User extends Entity<UserProps> {
   get email() {
     return this.props.email;
   }
-  set email(email: string) {
-    this.props.email = email;
-  }
   get password() {
     return this.props.password;
   }
-  set password(password: string) {
-    this.props.password = password;
-  }
   get role() {
     return this.props.role;
-  }
-  set role(role: UserRole) {
-    this.props.role = role;
-  }
-  get createdAt() {
-    return this.props.createdAt;
-  }
-  get updatedAt() {
-    return this.props.updatedAt;
   }
 }

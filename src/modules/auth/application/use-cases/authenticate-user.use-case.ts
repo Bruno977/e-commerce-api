@@ -1,7 +1,7 @@
 import { NotAllowedError } from 'src/lib/common/errors/not-allowed.error';
 import { UserRepository } from '../../domain/repositories/user.repository';
 import { Hasher } from '../cryptography/hasher';
-import { RequestAuthenticateUserDTO } from '../dtos/authenticate-user.dto';
+import { RequestAuthenticateUserDTO } from '../interfaces/authenticate-user.dto';
 import { Encrypt } from '../cryptography/encrypt';
 import { Injectable } from '@nestjs/common';
 import { Either, left, right } from 'src/lib/common/either/either';
@@ -28,7 +28,10 @@ export class AuthenticateUserUseCase {
       return left(new NotAllowedError('Invalid credentials'));
     }
 
-    const isSamePassword = await this.hasher.compare(password, user.password);
+    const isSamePassword = await this.hasher.compare(
+      password,
+      user.password.getValue(),
+    );
     if (!isSamePassword) {
       return left(new NotAllowedError('Invalid credentials'));
     }

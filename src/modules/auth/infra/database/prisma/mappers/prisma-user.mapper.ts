@@ -1,25 +1,25 @@
 import { Prisma, User as UserPrisma } from '@prisma/client';
 import { User } from 'src/modules/auth/domain/entities/user';
-import { UserRole } from 'src/modules/auth/domain/enums/user-role.enum';
+import { Email } from 'src/modules/auth/domain/value-objects/email';
+import { Password } from 'src/modules/auth/domain/value-objects/password';
+import { Role } from 'src/modules/auth/domain/value-objects/role';
 
 export class PrismaUserMapper {
   static toPrisma(user: User): Prisma.UserUncheckedCreateInput {
     return {
       name: user.name,
-      email: user.email,
-      password: user.password,
-      role: user.role,
-      createdAt: user.createdAt,
-      updatedAt: user.updatedAt,
+      email: user.email.getValue(),
+      password: user.password.getValue(),
+      role: user.role.getValue(),
     };
   }
   static toDomain(raw: UserPrisma): User {
     return new User(
       {
         name: raw.name,
-        email: raw.email,
-        password: raw.password,
-        role: raw.role as UserRole,
+        email: new Email(raw.email),
+        password: new Password(raw.password),
+        role: new Role(raw.role),
         createdAt: raw.createdAt,
         updatedAt: raw.updatedAt,
       },

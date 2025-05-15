@@ -2,7 +2,7 @@ import { INestApplication } from '@nestjs/common';
 import * as request from 'supertest';
 import { Test } from '@nestjs/testing';
 import { AppModule } from 'src/app.module';
-import { PrismaService } from '../../database/prisma/prisma.service';
+import { PrismaService } from 'src/lib/common/infra/database/prisma/prisma.service';
 
 describe('Register Controller (E2E)', () => {
   let app: INestApplication;
