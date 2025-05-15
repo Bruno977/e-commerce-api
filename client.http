@@ -8,8 +8,8 @@ Content-Type: application/json
 
 {
   "name": "Bruno Rodrigues",
-  "email": "bruno2@example.com.br",
-  "role": "admin",
+  "email": "bruno3@example.com.br",
+  "role": "viewer",
   "password": "123456"
 }
 

@@ -28,7 +28,7 @@ describe('Create Category Controller (E2E)', () => {
     });
     const accessToken = jwt.sign({
       sub: user.id.toString(),
-      role: user.role,
+      role: user.role.getValue(),
     });
     const response = await request(app.getHttpServer())
       .post('/categories')

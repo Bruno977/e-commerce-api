@@ -6,12 +6,14 @@ import { ValidationPipe } from 'src/lib/common/infra/pipes/validation-pipe';
 import { CurrentUser } from 'src/lib/common/infra/decorators/current-user.decorator';
 import { JwtPayload } from 'src/modules/auth/infra/auth/jwt.strategy';
 import { UserRole } from 'src/modules/auth/domain/enums/user-role.enum';
+import { AuthRoles } from 'src/lib/common/infra/decorators/auth-roles.decorator';
 
 @Controller('/categories')
 export class CreateCategoryController {
   constructor(private createCategory: CreateCategoryUseCase) {}
   @Post()
   @HttpCode(201)
+  @AuthRoles(UserRole.ADMIN)
   async handle(
     @Body(new ValidationPipe()) body: CreateCategoryDTO,
     @CurrentUser() user: JwtPayload,
