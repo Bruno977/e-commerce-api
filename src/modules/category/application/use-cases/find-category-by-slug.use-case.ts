@@ -2,6 +2,7 @@ import { Either, left, right } from 'src/lib/common/either/either';
 import { CategoryRepository } from '../../domain/repositories/category.repository';
 import { Category } from '../../domain/entities/category';
 import { ResourceNotFoundError } from 'src/lib/common/errors/resource-not-found.error';
+import { Injectable } from '@nestjs/common';
 
 type ResponseFindCategoryBySlugUseCase = Promise<
   Either<
@@ -11,6 +12,7 @@ type ResponseFindCategoryBySlugUseCase = Promise<
     }
   >
 >;
+@Injectable()
 export class FindCategoryBySlugUseCase {
   constructor(private categoryRepository: CategoryRepository) {}
 

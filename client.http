@@ -42,3 +42,9 @@ Authorization: Bearer {{authToken}}
 # @name find_category_by_id
 GET {{baseUrl}}/categories/62305f7f-9661-4acd-8eb2-2c521018ff51
 Content-Type: application/json
+
+###
+
+# @name find_category_by_slug
+GET {{baseUrl}}/categories/slug/category-1
+Content-Type: application/json
