@@ -40,6 +40,12 @@ export class Category extends Entity<CategoryProps> {
   get slug() {
     return this.props.slug;
   }
+  get createdAt() {
+    return this.props.createdAt;
+  }
+  get updatedAt() {
+    return this.props.updatedAt;
+  }
   updateTitle(title: string) {
     this.props.title = title;
     this.props.slug = Slug.fromTitle(title);
