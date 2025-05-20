@@ -4,9 +4,8 @@ import { ProductRepository } from '../../domain/repositories/product.repository'
 export class InMemoryProductRepository implements ProductRepository {
   public products: Product[] = [];
 
-  async create(product: Product): Promise<Product> {
+  async create(product: Product): Promise<void> {
     this.products.push(product);
-    return product;
   }
 
   async findById(id: string): Promise<Product | null> {
@@ -42,7 +41,7 @@ export class InMemoryProductRepository implements ProductRepository {
     this.products.splice(productIndex, 1);
   }
 
-  async update(product: Product): Promise<Product> {
+  async update(product: Product): Promise<void> {
     const productIndex = this.products.findIndex(
       (p) => p.id.toString() === product.id.toString(),
     );
@@ -50,6 +49,5 @@ export class InMemoryProductRepository implements ProductRepository {
       this.products[productIndex] = product;
     }
     this.products[productIndex] = product;
-    return product;
   }
 }

@@ -1,3 +1,4 @@
+import { Injectable } from '@nestjs/common';
 import { Either, left, right } from 'src/lib/common/either/either';
 import { CategoryRepository } from '../../domain/repositories/category.repository';
 import { ResourceNotFoundError } from 'src/lib/common/errors/resource-not-found.error';
@@ -8,6 +9,7 @@ import { ProductRepository } from 'src/modules/product/domain/repositories/produ
 type ResponseRemoveCategoryUseCase = Promise<
   Either<ResourceNotFoundError | NotAllowedError, null>
 >;
+@Injectable()
 export class RemoveCategoryUseCase {
   constructor(
     private categoryRepository: CategoryRepository,

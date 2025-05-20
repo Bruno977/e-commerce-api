@@ -24,12 +24,11 @@ describe('AddCategoryToProductUseCase', () => {
     await inMemoryCategoryRepository.create(newCategory);
     const newCategory2 = makeFakeCategory();
     await inMemoryCategoryRepository.create(newCategory2);
+    const newProduct = makeFakeProduct({
+      categoryIds: [newCategory.id.toString(), newCategory2.id.toString()],
+    });
 
-    const newProduct = await inMemoryProductRepository.create(
-      makeFakeProduct({
-        categoryIds: [newCategory.id.toString(), newCategory2.id.toString()],
-      }),
-    );
+    await inMemoryProductRepository.create(newProduct);
 
     const newCategory3 = makeFakeCategory({
       title: 'New Category',
@@ -59,8 +58,8 @@ describe('AddCategoryToProductUseCase', () => {
     expect(result.value).toBeInstanceOf(ResourceNotFoundError);
   });
   it("should not be able to add a category that doesn't exist", async () => {
-    const newProduct =
-      await inMemoryProductRepository.create(makeFakeProduct());
+    const newProduct = makeFakeProduct();
+    await inMemoryProductRepository.create(newProduct);
 
     const result = await sut.execute({
       productId: newProduct.id.toString(),

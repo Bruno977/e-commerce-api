@@ -7,14 +7,7 @@ import { Product } from '../../domain/entities/product';
 import { CategoryRepository } from 'src/modules/category/domain/repositories/category.repository';
 import { ResourceNotFoundError } from 'src/lib/common/errors/resource-not-found.error';
 
-type ResponseCreateProductUseCase = Promise<
-  Either<
-    NotAllowedError,
-    {
-      product: Product;
-    }
-  >
->;
+type ResponseCreateProductUseCase = Promise<Either<NotAllowedError, null>>;
 
 export class CreateProductUseCase {
   constructor(
@@ -51,8 +44,8 @@ export class CreateProductUseCase {
     if (discount) {
       newProduct.applyDiscount(discount);
     }
-    const product = await this.productRepository.create(newProduct);
+    await this.productRepository.create(newProduct);
 
-    return right({ product });
+    return right(null);
   }
 }
