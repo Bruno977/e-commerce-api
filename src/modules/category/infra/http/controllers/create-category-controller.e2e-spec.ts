@@ -21,7 +21,7 @@ describe('Create Category Controller (E2E)', () => {
     jwt = moduleRef.get(JwtService);
     await app.init();
   });
-  it('/POST /categories', async () => {
+  it('/PUT /categories', async () => {
     const user = makeFakeUser();
     await prisma.user.create({
       data: PrismaUserMapper.toPrisma(user),
@@ -30,6 +30,12 @@ describe('Create Category Controller (E2E)', () => {
       sub: user.id.toString(),
       role: user.role.getValue(),
     });
+
+    const initialCategory = await prisma.category.findFirst({
+      where: { title: 'Electronics' },
+    });
+    const initialUpdatedAt = initialCategory?.updatedAt;
+
     const response = await request(app.getHttpServer())
       .post('/categories')
       .send({
@@ -38,8 +44,18 @@ describe('Create Category Controller (E2E)', () => {
       })
       .set('Authorization', `Bearer ${accessToken}`);
     expect(response.status).toBe(201);
-    const category = await prisma.category.findFirst();
+
+    const category = await prisma.category.findFirst({
+      where: { title: 'Electronics' },
+    });
     expect(category?.title).toBe('Electronics');
     expect(category?.description).toBe('Devices and gadgets');
+    expect(category?.slug).toBe('electronics');
+    expect(category?.updatedAt).toBeDefined();
+    if (initialUpdatedAt) {
+      expect(category?.updatedAt.getTime()).toBeGreaterThan(
+        initialUpdatedAt.getTime(),
+      );
+    }
   });
 });

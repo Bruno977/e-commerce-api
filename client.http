@@ -58,3 +58,16 @@ Authorization: Bearer {{authToken}}
 Content-Type: application/json
 ###
 
+# @name update_category
+
+PUT {{baseUrl}}/categories/ca058a46-ca91-4b1e-82a0-f60eee50f13b
+Authorization: Bearer {{authToken}}
+Content-Type: application/json
+
+{
+  "title": "Category 1",
+  "description": "Description of category 1"
+}
+
+###
+

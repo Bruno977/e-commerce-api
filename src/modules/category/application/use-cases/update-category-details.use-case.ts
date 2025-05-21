@@ -3,10 +3,13 @@ import { CategoryRepository } from '../../domain/repositories/category.repositor
 import { IUpdateCategoryDetails } from '../interfaces/update-category-details';
 import { Either, left, right } from 'src/lib/common/either/either';
 import { Category } from '../../domain/entities/category';
+import { Injectable } from '@nestjs/common';
 
 type ResponseUpdateCategoryDetailsUseCase = Promise<
   Either<ResourceNotFoundError, { category: Category }>
 >;
+
+@Injectable()
 export class UpdateCategoryDetailsUseCase {
   constructor(private readonly categoryRepository: CategoryRepository) {}
 

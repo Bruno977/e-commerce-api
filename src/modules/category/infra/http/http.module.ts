@@ -8,6 +8,8 @@ import { FindCategoryBySlugController } from './controllers/find-category-by-slu
 import { FindCategoryBySlugUseCase } from '../../application/use-cases/find-category-by-slug.use-case';
 import { RemoveCategoryController } from './controllers/remove-category.controller';
 import { RemoveCategoryUseCase } from '../../application/use-cases/remove-category.use-case';
+import { UpdateCategoryDetailsController } from './controllers/update-category-details.controller';
+import { UpdateCategoryDetailsUseCase } from '../../application/use-cases/update-category-details.use-case';
 
 @Module({
   imports: [DatabaseModule],
@@ -16,12 +18,14 @@ import { RemoveCategoryUseCase } from '../../application/use-cases/remove-catego
     FindCategoryByIdController,
     FindCategoryBySlugController,
     RemoveCategoryController,
+    UpdateCategoryDetailsController,
   ],
   providers: [
     CreateCategoryUseCase,
     FindCategoryByIdUseCase,
     FindCategoryBySlugUseCase,
     RemoveCategoryUseCase,
+    UpdateCategoryDetailsUseCase,
   ],
 })
 export class CategoryHttpModule {}
