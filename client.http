@@ -88,8 +88,20 @@ Authorization: Bearer {{authToken}}
 {
   "name": "Product 1",
   "description": "Description of product 1",
-  "price": 100.0,
-  "categoryId": "ca058a46-ca91-4b1e-82a0-f60eee50f13b"
+  "price": 100,
+  "discount": 10,
+  "stock": 50,
+  "categoryIds": ["ca058a46-ca91-4b1e-82a0-f60eee50f13b"],
+  "images": [
+    {
+      "url": "https://example.com/image1.jpg",
+      "alt": "Image 1"
+    },
+    {
+      "path": "https://example.com/image2.jpg",
+      "alt": "Image 2"
+    }
+  ]
 }
 
 ###
