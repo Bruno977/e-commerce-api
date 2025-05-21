@@ -2,7 +2,9 @@ import { Product } from 'src/modules/product/domain/entities/product';
 import { ProductRepository } from 'src/modules/product/domain/repositories/product.repository';
 import { PrismaProductMapper } from '../mapper/prisma-product.mapper';
 import { PrismaService } from 'src/lib/common/infra/database/prisma/prisma.service';
+import { Injectable } from '@nestjs/common';
 
+@Injectable()
 export class PrismaProductRepository implements ProductRepository {
   constructor(private prisma: PrismaService) {}
   async create(product: Product): Promise<void> {

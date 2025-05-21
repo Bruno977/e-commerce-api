@@ -15,13 +15,13 @@ import { RemoveCategoryUseCase } from '../../application/use-cases/remove-catego
     CreateCategoryController,
     FindCategoryByIdController,
     FindCategoryBySlugController,
-    // RemoveCategoryController,
+    RemoveCategoryController,
   ],
   providers: [
     CreateCategoryUseCase,
     FindCategoryByIdUseCase,
     FindCategoryBySlugUseCase,
-    // RemoveCategoryUseCase,
+    RemoveCategoryUseCase,
   ],
 })
 export class CategoryHttpModule {}
