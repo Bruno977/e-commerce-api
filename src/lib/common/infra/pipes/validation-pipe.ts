@@ -5,7 +5,7 @@ import {
   BadRequestException,
 } from '@nestjs/common';
 
-import { validate } from 'class-validator';
+import { ValidationError, validate } from 'class-validator';
 import { plainToInstance } from 'class-transformer';
 
 @Injectable()
@@ -20,15 +20,12 @@ export class ValidationPipe implements PipeTransform<any> {
       throw new BadRequestException({
         message: 'Validation failed',
         statusCode: 400,
-        errors: errors.map((error) => ({
-          [error.property]: error.constraints
-            ? Object.values(error.constraints).join(', ')
-            : '',
-        })),
+        errors: this.formatErrors(errors),
       });
     }
     return value;
   }
+
   private toValidate(
     metatype: { new (...args: any[]): any } | ((...args: any[]) => any),
   ): boolean {
@@ -40,5 +37,26 @@ export class ValidationPipe implements PipeTransform<any> {
       Object,
     ];
     return !types.includes(metatype as new (...args: any[]) => any);
+  }
+
+  private formatErrors(errors: ValidationError[]): any[] {
+    return errors.map((error) => {
+      const formattedError: {
+        field: string;
+        constraints: string | null;
+        children?: any[];
+      } = {
+        field: error.property,
+        constraints: error.constraints
+          ? Object.values(error.constraints).join(', ')
+          : null,
+      };
+
+      if (error.children && error.children.length > 0) {
+        formattedError.children = this.formatErrors(error.children);
+      }
+
+      return formattedError;
+    });
   }
 }
