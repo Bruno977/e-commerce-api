@@ -107,7 +107,7 @@ Authorization: Bearer {{authToken}}
 ###
 
 # @name find_product_by_id
-GET {{baseUrl}}/products/12345
+GET {{baseUrl}}/products/facec027-dbda-490d-8212-ec459b9ea72d
 Content-Type: application/json
 
 ###

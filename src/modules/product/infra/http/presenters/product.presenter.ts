@@ -1,0 +1,19 @@
+import { Product } from 'src/modules/product/domain/entities/product';
+export class ProductPresenter {
+  static toHttp(product: Product) {
+    return {
+      id: product?.id.toString(),
+      name: product?.name,
+      description: product?.description,
+      price: product?.currentPrice,
+      originalPrice: product?.originalPrice,
+      discount: product?.discount,
+      stock: product?.stock,
+      images: product?.images.map((image) => ({
+        alt: image.altText,
+        path: image?.imagePath,
+      })),
+      categories: product?.categoriesIds,
+    };
+  }
+}
