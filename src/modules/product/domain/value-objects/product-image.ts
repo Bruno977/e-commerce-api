@@ -1,21 +1,23 @@
+interface ProductImageProps {
+  path: string;
+  alt: string;
+}
+
 export class ProductImage {
-  constructor(
-    private readonly path: string,
-    private readonly _altText: string,
-  ) {
-    if (!path) {
+  constructor(private props: ProductImageProps) {}
+
+  static create(props: ProductImageProps) {
+    if (!props.path) {
       throw new Error('Image path cannot be empty.');
     }
+    return new ProductImage(props);
   }
 
-  get imagePath(): string {
-    return this.path;
+  get path(): string {
+    return this.props.path;
   }
 
-  get altText(): string {
-    return this._altText;
-  }
-  getFullUrl(baseUrl: string): string {
-    return `${baseUrl}${this.path}`;
+  get alt(): string {
+    return this.props.alt;
   }
 }

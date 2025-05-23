@@ -1,3 +1,4 @@
+import { Id } from './../../../../lib/common/entities/id';
 import { InMemoryProductRepository } from './../../../product/test/repositories/in-memory-product-repository';
 import { InMemoryCategoryRepository } from '../../test/repositories/in-memory-category.repository';
 import { RemoveCategoryUseCase } from './remove-category.use-case';
@@ -5,6 +6,7 @@ import { makeFakeCategory } from '../../test/factories/make-fake-category';
 import { ResourceNotFoundError } from 'src/lib/common/errors/resource-not-found.error';
 import { makeFakeProduct } from 'src/modules/product/test/factories/make-fake-product';
 import { NotAllowedError } from 'src/lib/common/errors/not-allowed.error';
+import { ProductCategory } from 'src/modules/product/domain/entities/product-category';
 
 let sut: RemoveCategoryUseCase;
 let inMemoryCategoryRepository: InMemoryCategoryRepository;
@@ -39,7 +41,12 @@ describe('RemoveCategoryUseCase', () => {
     await inMemoryCategoryRepository.create(newCategory);
 
     const newProduct = makeFakeProduct({
-      categoryIds: [newCategory.id.toString()],
+      categories: [
+        ProductCategory.create({
+          id: new Id(newCategory.id.toString()),
+          title: newCategory.title,
+        }),
+      ],
     });
     await inMemoryProductRepository.create(newProduct);
 

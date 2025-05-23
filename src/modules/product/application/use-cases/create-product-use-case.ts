@@ -7,6 +7,9 @@ import { Product } from '../../domain/entities/product';
 import { CategoryRepository } from 'src/modules/category/domain/repositories/category.repository';
 import { ResourceNotFoundError } from 'src/lib/common/errors/resource-not-found.error';
 import { Injectable } from '@nestjs/common';
+import { ProductCategory } from '../../domain/entities/product-category';
+import { Id } from 'src/lib/common/entities/id';
+import { ProductImage } from '../../domain/value-objects/product-image';
 
 type ResponseCreateProductUseCase = Promise<Either<NotAllowedError, null>>;
 
@@ -19,29 +22,45 @@ export class CreateProductUseCase {
   async execute({
     name,
     description,
-    categoryIds,
+    categories,
     images,
     price,
     stock,
     discount,
   }: ICreateProduct): Promise<ResponseCreateProductUseCase> {
-    const existsCategories =
-      await this.categoryRepository.findByIds(categoryIds);
+    const existsCategories = await this.categoryRepository.findByIds(
+      categories.map((category) => category.id),
+    );
     if (!existsCategories) {
       return left(new ResourceNotFoundError('Category not found'));
     }
+    const productCategories = categories.map(
+      (category) =>
+        new ProductCategory({
+          id: Id.create(category.id),
+          title: category.title,
+        }),
+    );
+    const imagesToAdd = images.map((image) =>
+      ProductImage.create({
+        alt: image.alt,
+        path: image.path,
+      }),
+    );
 
     const newProduct = Product.create({
       name,
       description,
-      categoryIds,
+      categories: [],
       originalPrice: new Price(price),
       price: new Price(price),
-      imagePaths: [],
+      images: [],
       discount: null,
       stock,
     });
-    newProduct.addImages(images);
+
+    newProduct.addImages(imagesToAdd);
+    newProduct.addCategoriesToProduct(productCategories);
 
     if (discount) {
       newProduct.applyDiscount(discount);

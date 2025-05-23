@@ -28,10 +28,10 @@ describe('AddImageUseCase', () => {
     });
     const product = inMemoryProductRepository.products[0];
     expect(product.images).toHaveLength(3);
-    expect(product.images[1].imagePath).toBe('image1.png');
-    expect(product.images[1].altText).toBe('Image 1');
-    expect(product.images[2].imagePath).toBe('image2.png');
-    expect(product.images[2].altText).toBe('Image 2');
+    expect(product.images[1].path).toBe('image1.png');
+    expect(product.images[1].alt).toBe('Image 1');
+    expect(product.images[2].path).toBe('image2.png');
+    expect(product.images[2].alt).toBe('Image 2');
   });
   it('should not be able to add an image to a product that does not exist', async () => {
     const result = await sut.execute({

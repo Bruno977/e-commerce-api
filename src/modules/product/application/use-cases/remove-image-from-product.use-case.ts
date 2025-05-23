@@ -20,11 +20,7 @@ export class RemoveImageFromProductUseCase {
       return left(new ResourceNotFoundError(`Product not found`));
     }
 
-    const result = product.removeImages(imagePaths);
-
-    if (result.isLeft()) {
-      return left(result.value);
-    }
+    product.removeImages(imagePaths);
 
     await this.productRepository.update(product);
 

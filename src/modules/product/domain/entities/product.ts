@@ -1,9 +1,9 @@
 import { Entity } from 'src/lib/common/entities/entity';
 import { Price } from '../value-objects/price';
 import { ProductImage } from '../value-objects/product-image';
-import { Either, left, right } from 'src/lib/common/either/either';
-import { ImageProps } from '../../application/interfaces/create-product';
-import { ResourceNotFoundError } from 'src/lib/common/errors/resource-not-found.error';
+import { left } from 'src/lib/common/either/either';
+import { ProductCategory } from './product-category';
+import { Id } from 'src/lib/common/entities/id';
 
 export interface ProductProps {
   name: string;
@@ -12,8 +12,8 @@ export interface ProductProps {
   originalPrice: Price;
   discount?: number | null;
   stock: number;
-  categoryIds: string[];
-  imagePaths: ProductImage[];
+  categories: ProductCategory[];
+  images: ProductImage[];
   createdAt?: Date;
   updatedAt?: Date;
 }
@@ -49,11 +49,11 @@ export class Product extends Entity<ProductProps> {
   get description() {
     return this.props.description;
   }
-  get categoriesIds() {
-    return this.props.categoryIds;
-  }
   get images() {
-    return this.props.imagePaths;
+    return this.props.images;
+  }
+  get categories() {
+    return this.props.categories;
   }
   updateDescription(description: string) {
     this.props.description = description;
@@ -88,50 +88,49 @@ export class Product extends Entity<ProductProps> {
     this.props.stock = stock;
     this.updateTimestamp();
   }
-  addImages(images: ImageProps[]) {
+  addImages(images: ProductImage[]) {
+    const currentImagePaths = new Set(
+      this.props.images.map((image) => image.path),
+    );
+
     images.forEach((image) => {
-      this.props.imagePaths.push(new ProductImage(image.path, image.alt));
+      if (!currentImagePaths.has(image.path)) {
+        this.props.images.push(image);
+        currentImagePaths.add(image.path);
+      }
     });
     this.updateTimestamp();
   }
-  removeImages(imagesPaths: string[]): Either<ResourceNotFoundError, void> {
-    const notFoundImages = imagesPaths.filter(
-      (imageToRemove) =>
-        !this.props.imagePaths.some(
-          (image) => image.imagePath === imageToRemove,
-        ),
-    );
-
-    if (notFoundImages.length > 0) {
-      return left(
-        new ResourceNotFoundError(
-          `Images not found: ${notFoundImages.join(', ')}`,
-        ),
-      );
-    }
-
-    this.props.imagePaths = this.props.imagePaths.filter(
-      (image) => !imagesPaths.includes(image.imagePath),
+  removeImages(imagesPaths: string[]) {
+    this.props.images = this.props.images.filter(
+      (image) => !imagesPaths.includes(image.path),
     );
 
     this.updateTimestamp();
-    return right(undefined);
   }
 
-  addCategoryToProduct(categoryId: string) {
-    if (this.props.categoryIds.includes(categoryId)) {
-      return left(new Error('Category already associated with this product.'));
-    }
-    this.props.categoryIds.push(categoryId);
+  addCategoriesToProduct(categories: ProductCategory[]) {
+    const currentCategoryIds = new Set(
+      this.props.categories.map((category) => category.id.toString()),
+    );
+
+    categories.forEach((category) => {
+      if (!currentCategoryIds.has(category.id.toString())) {
+        this.props.categories.push(category);
+        currentCategoryIds.add(category.id.toString());
+      }
+    });
     this.updateTimestamp();
   }
 
-  removeCategoryFromProduct(categoryId: string) {
-    const index = this.props.categoryIds.indexOf(categoryId);
-    if (index === -1) {
-      return left(new Error('Category not associated with this product.'));
-    }
-    this.props.categoryIds.splice(index, 1);
+  removeCategoriesFromProduct(categoryIds: Id[]) {
+    this.props.categories = this.props.categories.filter(
+      (categoryToRemove) =>
+        !categoryIds.some(
+          (categoryId) =>
+            categoryId.toString() === categoryToRemove.id.toString(),
+        ),
+    );
     this.updateTimestamp();
   }
 }

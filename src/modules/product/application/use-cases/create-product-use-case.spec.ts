@@ -24,7 +24,12 @@ describe('CreateProductUseCase', () => {
     const newProduct = makeFakeProductData({
       price: 100,
       discount: 10,
-      categoryIds: [newCategory.id.toString()],
+      categories: [
+        {
+          id: newCategory.id.toString(),
+          title: newCategory.title,
+        },
+      ],
     });
 
     const result = await sut.execute(newProduct);
@@ -37,9 +42,13 @@ describe('CreateProductUseCase', () => {
     expect(product.currentPrice).toBe(90);
     expect(product.stock).toBe(newProduct.stock);
     expect(product.discount).toBe(10);
-    expect(product.images[0].imagePath).toBe(newProduct.images[0].path);
-    expect(product.images[0].altText).toBe(newProduct.images[0].alt);
-    expect(product.categoriesIds).toEqual(newProduct.categoryIds);
+    expect(product.images[0].path).toBe(newProduct.images[0].path);
+    expect(product.images[0].alt).toBe(newProduct.images[0].alt);
+    expect(product.categories).toEqual([
+      expect.objectContaining({
+        title: newCategory.title,
+      }),
+    ]);
   });
   it('should create a product with no discount', async () => {
     const newCategory = makeFakeCategory();
@@ -48,7 +57,12 @@ describe('CreateProductUseCase', () => {
     const newProduct = makeFakeProductData({
       price: 100,
       discount: null,
-      categoryIds: [newCategory.id.toString()],
+      categories: [
+        {
+          id: newCategory.id.toString(),
+          title: newCategory.title,
+        },
+      ],
     });
 
     const result = await sut.execute(newProduct);
