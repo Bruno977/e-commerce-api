@@ -3,6 +3,7 @@ import { ResourceNotFoundError } from 'src/lib/common/errors/resource-not-found.
 import { ProductRepository } from '../../domain/repositories/product.repository';
 import { IUpdateProductDetails } from '../interfaces/update-product-details';
 import { Stock } from '../../domain/value-objects/stock';
+import { Price } from '../../domain/value-objects/price';
 
 type ResponseUpdateProductDetailsUseCase = Promise<
   Either<ResourceNotFoundError, null>
@@ -23,13 +24,13 @@ export class UpdateProductDetailsUseCase {
     if (name) product.updateName(name);
     if (description) product.updateDescription(description);
     if (stock) product.updateStock(new Stock(stock));
+
     if (price) {
-      product.updateOriginalPrice(price);
-      product.updatePrice(price);
+      product.updatePrice(Price.create(price));
     }
-    if (discount) {
+    if (discount && discount > 0) {
       product.applyDiscount(discount);
-    } else if (product.discount) {
+    } else if (product.discount && product.discount > 0) {
       product.applyDiscount(product.discount);
     }
 

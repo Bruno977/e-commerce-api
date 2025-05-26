@@ -9,8 +9,6 @@ export interface ProductProps {
   name: string;
   description: string;
   price: Price;
-  originalPrice: Price;
-  discount?: number | null;
   stock: Stock;
   categories: ProductCategory[];
   images: ProductImage[];
@@ -31,14 +29,14 @@ export class Product extends Entity<ProductProps> {
   private updateTimestamp() {
     this.props.updatedAt = new Date();
   }
-  get originalPrice() {
-    return this.props.originalPrice.amount;
-  }
   get currentPrice() {
-    return this.props.price.amount;
+    return this.props.price.getPriceWithDiscount();
+  }
+  get originalPrice() {
+    return this.props.price.getOriginalPrice();
   }
   get discount() {
-    return this.props.discount;
+    return this.props.price.getDiscount();
   }
   get name() {
     return this.props.name;
@@ -46,7 +44,6 @@ export class Product extends Entity<ProductProps> {
   get getStock() {
     return this.props.stock.getQuantity();
   }
-
   get description() {
     return this.props.description;
   }
@@ -67,22 +64,12 @@ export class Product extends Entity<ProductProps> {
     this.props.name = name;
     this.updateTimestamp();
   }
-  updateOriginalPrice(price: number) {
-    this.props.originalPrice = new Price(price);
-    this.updateTimestamp();
-  }
-  updatePrice(price: number) {
-    this.props.price = new Price(price);
+  updatePrice(price: Price) {
+    this.props.price = price;
     this.updateTimestamp();
   }
   applyDiscount(discount: number) {
-    this.props.price = this.props.originalPrice.applyDiscount(discount);
-    this.props.discount = discount;
-    this.updateTimestamp();
-  }
-  removeDiscount() {
-    this.props.price = this.props.originalPrice;
-    this.props.discount = null;
+    this.props.price = this.props.price.applyDiscount(discount);
     this.updateTimestamp();
   }
   addImages(images: ProductImage[]) {

@@ -10,9 +10,10 @@ export function makeFakeProduct(override: Partial<ProductProps> = {}) {
   const newProduct = Product.create({
     name: faker.commerce.productName(),
     description: faker.commerce.productDescription(),
-    price: new Price(parseFloat(faker.commerce.price())),
-    discount: parseFloat(faker.commerce.price()),
-    originalPrice: new Price(parseFloat(faker.commerce.price())),
+    price: Price.createWithDiscount(
+      parseFloat(faker.commerce.price()),
+      faker.number.int({ min: 0, max: 100 }),
+    ),
     stock: new Stock(faker.number.int({ min: 0, max: 100 })),
     images: [
       ProductImage.create({

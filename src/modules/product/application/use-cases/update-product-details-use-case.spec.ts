@@ -2,6 +2,7 @@ import { InMemoryProductRepository } from '../../test/repositories/in-memory-pro
 import { UpdateProductDetailsUseCase } from './update-product-details.use-case';
 import { makeFakeProduct } from '../../test/factories/make-fake-product';
 import { ResourceNotFoundError } from 'src/lib/common/errors/resource-not-found.error';
+import { Price } from '../../domain/value-objects/price';
 
 let sut: UpdateProductDetailsUseCase;
 let inMemoryProductRepository: InMemoryProductRepository;
@@ -18,8 +19,8 @@ describe('UpdateProductDetailsUseCase', () => {
       name: 'updated name',
       description: 'updated description',
       price: 100,
-      stock: 10,
       discount: 10,
+      stock: 10,
     });
     expect(result.isRight()).toBeTruthy();
     const productUpdated = inMemoryProductRepository.products[0];
@@ -32,12 +33,11 @@ describe('UpdateProductDetailsUseCase', () => {
   });
   it('should be able to update a product price with discount', async () => {
     const newProduct = makeFakeProduct({
-      discount: 10,
+      price: Price.createWithDiscount(200, 10),
     });
     await inMemoryProductRepository.create(newProduct);
     const result = await sut.execute({
       id: newProduct.id.toString(),
-      price: 200,
     });
     expect(result.isRight()).toBeTruthy();
     const productUpdated = inMemoryProductRepository.products[0];

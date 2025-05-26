@@ -71,7 +71,7 @@ describe('CreateProductUseCase', () => {
     const product = inMemoryProductRepository.products[0];
     expect(product.originalPrice).toBe(100);
     expect(product.currentPrice).toBe(100);
-    expect(product.discount).toBe(null);
+    expect(product.discount).toBe(0);
   });
   it('should not create a product if not exists category', async () => {
     const newProduct = makeFakeProductData();

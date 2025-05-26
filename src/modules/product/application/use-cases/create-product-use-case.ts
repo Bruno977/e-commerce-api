@@ -51,10 +51,8 @@ export class CreateProductUseCase {
       name,
       description,
       categories: [],
-      originalPrice: new Price(price),
-      price: new Price(price),
+      price: Price.createWithDiscount(price, discount ?? 0),
       images: [],
-      discount: null,
       stock: new Stock(stock),
     });
 
