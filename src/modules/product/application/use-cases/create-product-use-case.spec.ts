@@ -40,7 +40,7 @@ describe('CreateProductUseCase', () => {
     expect(product.description).toBe(newProduct.description);
     expect(product.originalPrice).toBe(100);
     expect(product.currentPrice).toBe(90);
-    expect(product.stock).toBe(newProduct.stock);
+    expect(product.getStock).toBe(newProduct.stock);
     expect(product.discount).toBe(10);
     expect(product.images[0].path).toBe(newProduct.images[0].path);
     expect(product.images[0].alt).toBe(newProduct.images[0].alt);

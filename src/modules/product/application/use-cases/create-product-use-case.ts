@@ -9,6 +9,7 @@ import { ResourceNotFoundError } from 'src/lib/common/errors/resource-not-found.
 import { Injectable } from '@nestjs/common';
 import { ProductCategory } from '../../domain/entities/product-category';
 import { ProductImage } from '../../domain/entities/product-image';
+import { Stock } from '../../domain/value-objects/stock';
 
 type ResponseCreateProductUseCase = Promise<Either<NotAllowedError, null>>;
 
@@ -54,7 +55,7 @@ export class CreateProductUseCase {
       price: new Price(price),
       images: [],
       discount: null,
-      stock,
+      stock: new Stock(stock),
     });
 
     newProduct.addImages(imagesToAdd);

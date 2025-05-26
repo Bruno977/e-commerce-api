@@ -28,7 +28,7 @@ describe('UpdateProductDetailsUseCase', () => {
     expect(productUpdated.originalPrice).toBe(100);
     expect(productUpdated.currentPrice).toBe(90);
     expect(productUpdated.discount).toBe(10);
-    expect(productUpdated.stock).toBe(10);
+    expect(productUpdated.getStock).toBe(10);
   });
   it('should be able to update a product price with discount', async () => {
     const newProduct = makeFakeProduct({

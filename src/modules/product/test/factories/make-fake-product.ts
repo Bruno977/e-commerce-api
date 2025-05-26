@@ -4,6 +4,7 @@ import { Price } from '../../domain/value-objects/price';
 import { ICreateProduct } from '../../application/interfaces/create-product';
 import { ProductCategory } from '../../domain/entities/product-category';
 import { ProductImage } from '../../domain/entities/product-image';
+import { Stock } from '../../domain/value-objects/stock';
 
 export function makeFakeProduct(override: Partial<ProductProps> = {}) {
   const newProduct = Product.create({
@@ -12,7 +13,7 @@ export function makeFakeProduct(override: Partial<ProductProps> = {}) {
     price: new Price(parseFloat(faker.commerce.price())),
     discount: parseFloat(faker.commerce.price()),
     originalPrice: new Price(parseFloat(faker.commerce.price())),
-    stock: faker.number.int({ min: 0, max: 100 }),
+    stock: new Stock(faker.number.int({ min: 0, max: 100 })),
     images: [
       ProductImage.create({
         alt: faker.commerce.productName(),

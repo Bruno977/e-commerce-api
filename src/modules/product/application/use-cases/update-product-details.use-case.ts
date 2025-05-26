@@ -2,6 +2,7 @@ import { Either, left, right } from 'src/lib/common/either/either';
 import { ResourceNotFoundError } from 'src/lib/common/errors/resource-not-found.error';
 import { ProductRepository } from '../../domain/repositories/product.repository';
 import { IUpdateProductDetails } from '../interfaces/update-product-details';
+import { Stock } from '../../domain/value-objects/stock';
 
 type ResponseUpdateProductDetailsUseCase = Promise<
   Either<ResourceNotFoundError, null>
@@ -21,7 +22,7 @@ export class UpdateProductDetailsUseCase {
     }
     if (name) product.updateName(name);
     if (description) product.updateDescription(description);
-    if (stock) product.updateStock(stock);
+    if (stock) product.updateStock(new Stock(stock));
     if (price) {
       product.updateOriginalPrice(price);
       product.updatePrice(price);

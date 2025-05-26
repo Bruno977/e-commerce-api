@@ -1,9 +1,9 @@
 import { Entity } from 'src/lib/common/entities/entity';
 import { Price } from '../value-objects/price';
-import { left } from 'src/lib/common/either/either';
 import { ProductCategory } from './product-category';
 import { Id } from 'src/lib/common/entities/id';
 import { ProductImage } from './product-image';
+import { Stock } from '../value-objects/stock';
 
 export interface ProductProps {
   name: string;
@@ -11,7 +11,7 @@ export interface ProductProps {
   price: Price;
   originalPrice: Price;
   discount?: number | null;
-  stock: number;
+  stock: Stock;
   categories: ProductCategory[];
   images: ProductImage[];
   createdAt?: Date;
@@ -37,14 +37,14 @@ export class Product extends Entity<ProductProps> {
   get currentPrice() {
     return this.props.price.amount;
   }
-  get stock() {
-    return this.props.stock;
-  }
   get discount() {
     return this.props.discount;
   }
   get name() {
     return this.props.name;
+  }
+  get getStock() {
+    return this.props.stock.getQuantity();
   }
 
   get description() {
@@ -55,6 +55,9 @@ export class Product extends Entity<ProductProps> {
   }
   get categories() {
     return this.props.categories;
+  }
+  updateStock(newStock: Stock) {
+    this.props.stock.updateQuantity(newStock.getQuantity());
   }
   updateDescription(description: string) {
     this.props.description = description;
@@ -80,13 +83,6 @@ export class Product extends Entity<ProductProps> {
   removeDiscount() {
     this.props.price = this.props.originalPrice;
     this.props.discount = null;
-    this.updateTimestamp();
-  }
-  updateStock(stock: number) {
-    if (stock < 0) {
-      return left(new Error('Stock cannot be negative.'));
-    }
-    this.props.stock = stock;
     this.updateTimestamp();
   }
   addImages(images: ProductImage[]) {
