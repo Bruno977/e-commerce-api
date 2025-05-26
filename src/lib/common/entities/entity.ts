@@ -8,8 +8,8 @@ export abstract class Entity<Props> {
     return this._id;
   }
 
-  constructor(props: Props, id?: string) {
-    this._id = Id.create(id);
+  constructor(props: Props, id?: Id) {
+    this._id = id ?? Id.create();
     this.props = props;
   }
 }

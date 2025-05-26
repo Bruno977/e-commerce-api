@@ -21,10 +21,12 @@ describe('RemoveCategoryFromProductUseCase', () => {
     const category = makeFakeCategory();
     const product = makeFakeProduct({
       categories: [
-        ProductCategory.create({
-          id: category.id,
-          title: category.title,
-        }),
+        ProductCategory.create(
+          {
+            title: category.title,
+          },
+          category.id,
+        ),
       ],
     });
     await inMemoryCategoryRepository.create(category);

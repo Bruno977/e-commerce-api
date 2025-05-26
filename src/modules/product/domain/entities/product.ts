@@ -1,9 +1,9 @@
 import { Entity } from 'src/lib/common/entities/entity';
 import { Price } from '../value-objects/price';
-import { ProductImage } from '../value-objects/product-image';
 import { left } from 'src/lib/common/either/either';
 import { ProductCategory } from './product-category';
 import { Id } from 'src/lib/common/entities/id';
+import { ProductImage } from './product-image';
 
 export interface ProductProps {
   name: string;
@@ -46,6 +46,7 @@ export class Product extends Entity<ProductProps> {
   get name() {
     return this.props.name;
   }
+
   get description() {
     return this.props.description;
   }
@@ -89,21 +90,20 @@ export class Product extends Entity<ProductProps> {
     this.updateTimestamp();
   }
   addImages(images: ProductImage[]) {
-    const currentImagePaths = new Set(
-      this.props.images.map((image) => image.path),
-    );
+    const currentImageIds = new Set(this.props.images.map((image) => image.id));
 
     images.forEach((image) => {
-      if (!currentImagePaths.has(image.path)) {
+      if (!currentImageIds.has(image.id)) {
         this.props.images.push(image);
-        currentImagePaths.add(image.path);
+        currentImageIds.add(image.id);
       }
     });
     this.updateTimestamp();
   }
-  removeImages(imagesPaths: string[]) {
+
+  removeImages(imageIds: Id[]) {
     this.props.images = this.props.images.filter(
-      (image) => !imagesPaths.includes(image.path),
+      (image) => !imageIds.some((imageId) => image.id.equals(imageId)),
     );
 
     this.updateTimestamp();
@@ -125,11 +125,8 @@ export class Product extends Entity<ProductProps> {
 
   removeCategoriesFromProduct(categoryIds: Id[]) {
     this.props.categories = this.props.categories.filter(
-      (categoryToRemove) =>
-        !categoryIds.some(
-          (categoryId) =>
-            categoryId.toString() === categoryToRemove.id.toString(),
-        ),
+      (category) =>
+        !categoryIds.some((categoryId) => category.id.equals(categoryId)),
     );
     this.updateTimestamp();
   }

@@ -5,7 +5,6 @@ import { ProductRepository } from '../../domain/repositories/product.repository'
 import { CategoryRepository } from 'src/modules/category/domain/repositories/category.repository';
 import { IAddCategoryToProduct } from '../interfaces/add-category-to-product';
 import { ProductCategory } from '../../domain/entities/product-category';
-import { Id } from 'src/lib/common/entities/id';
 
 type ResponseAddCategoryToProductUseCase = Promise<
   Either<ResourceNotFoundError, { product: Product }>
@@ -32,7 +31,6 @@ export class AddCategoryToProductUseCase {
     }
     const categoriesToAdd = existCategories.map((category) => {
       return ProductCategory.create({
-        id: Id.create(category.id.toString()),
         title: category.title,
       });
     });

@@ -1,8 +1,8 @@
 import { makeFakeProduct } from '../../test/factories/make-fake-product';
 import { InMemoryProductRepository } from './../../test/repositories/in-memory-product-repository';
-import { ProductImage } from '../../domain/value-objects/product-image';
 import { ResourceNotFoundError } from 'src/lib/common/errors/resource-not-found.error';
 import { RemoveImageFromProductUseCase } from './remove-image-from-product.use-case';
+import { ProductImage } from '../../domain/entities/product-image';
 let sut: RemoveImageFromProductUseCase;
 let inMemoryProductRepository: InMemoryProductRepository;
 
@@ -12,12 +12,13 @@ describe('RemoveImageFromProductUseCase', () => {
     sut = new RemoveImageFromProductUseCase(inMemoryProductRepository);
   });
   it('should remove an image from a product', async () => {
+    const image1 = ProductImage.create({
+      alt: 'Image 1',
+      path: '/images/image1.jpg',
+    });
     const newProduct = makeFakeProduct({
       images: [
-        ProductImage.create({
-          alt: 'Image 1',
-          path: '/images/image1.jpg',
-        }),
+        image1,
         ProductImage.create({
           alt: 'Image 2',
           path: '/images/image2.jpg',
@@ -30,7 +31,7 @@ describe('RemoveImageFromProductUseCase', () => {
 
     await sut.execute({
       productId: newProduct.id.toString(),
-      imagePaths: ['/images/image1.jpg'],
+      imageIds: [image1.id.toString()],
     });
 
     expect(inMemoryProductRepository.products[0].images).toHaveLength(1);
@@ -41,23 +42,25 @@ describe('RemoveImageFromProductUseCase', () => {
   it("should throw if product doesn't exist", async () => {
     const result = await sut.execute({
       productId: 'non-existing-product-id',
-      imagePaths: [],
+      imageIds: [],
     });
 
     expect(result.isLeft()).toBe(true);
     expect(result.value).toBeInstanceOf(ResourceNotFoundError);
   });
   it('should remove multiple images from a product', async () => {
+    const image1 = ProductImage.create({
+      alt: 'Image 2',
+      path: '/images/image2.jpg',
+    });
+    const image2 = ProductImage.create({
+      alt: 'Image 2',
+      path: '/images/image2.jpg',
+    });
     const newProduct = makeFakeProduct({
       images: [
-        ProductImage.create({
-          alt: 'Image 1',
-          path: '/images/image1.jpg',
-        }),
-        ProductImage.create({
-          alt: 'Image 2',
-          path: '/images/image2.jpg',
-        }),
+        image1,
+        image2,
         ProductImage.create({
           alt: 'Image 3',
           path: '/images/image3.jpg',
@@ -70,7 +73,7 @@ describe('RemoveImageFromProductUseCase', () => {
 
     await sut.execute({
       productId: newProduct.id.toString(),
-      imagePaths: ['/images/image1.jpg', '/images/image2.jpg'],
+      imageIds: [image1.id.toString(), image2.id.toString()],
     });
 
     expect(inMemoryProductRepository.products[0].images).toHaveLength(1);
@@ -79,25 +82,14 @@ describe('RemoveImageFromProductUseCase', () => {
     );
   });
   // it('should throw if image to remove does not exist', async () => {
-  //   const newProduct = makeFakeProduct({
-  //     images: [
-  //       ProductImage.create({
-  //         alt: 'Image 1',
-  //         path: '/images/image1.jpg',
-  //       }),
-  //       ProductImage.create({
-  //         alt: 'Image 2',
-  //         path: '/images/image2.jpg',
-  //       }),
-  //     ],
-  //   });
+  //   const newProduct = makeFakeProduct();
   //   await inMemoryProductRepository.create(newProduct);
 
   //   expect(inMemoryProductRepository.products[0].images).toHaveLength(2);
 
   //   const result = await sut.execute({
   //     productId: newProduct.id.toString(),
-  //     imagePaths: ['/images/non-existing-image.jpg'],
+  //     imageIds: ['id-not-existing'],
   //   });
 
   //   expect(result.isLeft()).toBe(true);

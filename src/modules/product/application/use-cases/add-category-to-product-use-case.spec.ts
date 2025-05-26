@@ -5,7 +5,6 @@ import { makeFakeCategory } from 'src/modules/category/test/factories/make-fake-
 import { AddCategoryToProductUseCase } from './add-category-to-product.use-case';
 import { ResourceNotFoundError } from 'src/lib/common/errors/resource-not-found.error';
 import { ProductCategory } from '../../domain/entities/product-category';
-import { Id } from 'src/lib/common/entities/id';
 
 let sut: AddCategoryToProductUseCase;
 let inMemoryProductRepository: InMemoryProductRepository;
@@ -28,7 +27,6 @@ describe('AddCategoryToProductUseCase', () => {
     const newProduct = makeFakeProduct({
       categories: [
         ProductCategory.create({
-          id: Id.create(newCategory.id.toString()),
           title: newCategory.title,
         }),
       ],

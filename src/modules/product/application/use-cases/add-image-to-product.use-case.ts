@@ -2,7 +2,7 @@ import { Either, left, right } from 'src/lib/common/either/either';
 import { ResourceNotFoundError } from 'src/lib/common/errors/resource-not-found.error';
 import { IAddImageToProduct } from '../interfaces/add-image-to-product';
 import { ProductRepository } from '../../domain/repositories/product.repository';
-import { ProductImage } from '../../domain/value-objects/product-image';
+import { ProductImage } from '../../domain/entities/product-image';
 
 type ResponseAddImageUseCase = Promise<Either<ResourceNotFoundError, null>>;
 

@@ -1,4 +1,3 @@
-import { Id } from './../../../../lib/common/entities/id';
 import { InMemoryProductRepository } from './../../../product/test/repositories/in-memory-product-repository';
 import { InMemoryCategoryRepository } from '../../test/repositories/in-memory-category.repository';
 import { RemoveCategoryUseCase } from './remove-category.use-case';
@@ -42,10 +41,12 @@ describe('RemoveCategoryUseCase', () => {
 
     const newProduct = makeFakeProduct({
       categories: [
-        ProductCategory.create({
-          id: new Id(newCategory.id.toString()),
-          title: newCategory.title,
-        }),
+        ProductCategory.create(
+          {
+            title: newCategory.title,
+          },
+          newCategory.id,
+        ),
       ],
     });
     await inMemoryProductRepository.create(newProduct);

@@ -8,8 +8,7 @@ import { CategoryRepository } from 'src/modules/category/domain/repositories/cat
 import { ResourceNotFoundError } from 'src/lib/common/errors/resource-not-found.error';
 import { Injectable } from '@nestjs/common';
 import { ProductCategory } from '../../domain/entities/product-category';
-import { Id } from 'src/lib/common/entities/id';
-import { ProductImage } from '../../domain/value-objects/product-image';
+import { ProductImage } from '../../domain/entities/product-image';
 
 type ResponseCreateProductUseCase = Promise<Either<NotAllowedError, null>>;
 
@@ -37,7 +36,6 @@ export class CreateProductUseCase {
     const productCategories = categories.map(
       (category) =>
         new ProductCategory({
-          id: Id.create(category.id),
           title: category.title,
         }),
     );
