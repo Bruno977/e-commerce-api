@@ -4,7 +4,6 @@ import { Product } from '../../domain/entities/product';
 import { ProductRepository } from '../../domain/repositories/product.repository';
 import { CategoryRepository } from 'src/modules/category/domain/repositories/category.repository';
 import { IAddCategoryToProduct } from '../interfaces/add-category-to-product';
-import { ProductCategory } from '../../domain/entities/product-category';
 
 type ResponseAddCategoryToProductUseCase = Promise<
   Either<ResourceNotFoundError, { product: Product }>
@@ -29,11 +28,8 @@ export class AddCategoryToProductUseCase {
     if (!existCategories) {
       return left(new ResourceNotFoundError(`Category not found`));
     }
-    const categoriesToAdd = existCategories.map((category) => {
-      return ProductCategory.create({
-        title: category.title,
-      });
-    });
+    const categoriesToAdd = existCategories.map((category) => category.id);
+
     product.addCategoriesToProduct(categoriesToAdd);
 
     await this.productRepository.update(product);

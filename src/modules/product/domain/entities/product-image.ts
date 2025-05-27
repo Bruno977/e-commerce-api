@@ -1,4 +1,5 @@
 import { Entity } from 'src/lib/common/entities/entity';
+import { Id } from 'src/lib/common/entities/id';
 
 interface ProductImageProps {
   path: string;
@@ -6,11 +7,11 @@ interface ProductImageProps {
 }
 
 export class ProductImage extends Entity<ProductImageProps> {
-  static create(props: ProductImageProps) {
+  static create(props: ProductImageProps, id?: Id) {
     if (!props.path) {
       throw new Error('ProductImage must have a path');
     }
-    return new ProductImage(props);
+    return new ProductImage(props, id);
   }
 
   get path() {

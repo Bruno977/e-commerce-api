@@ -4,7 +4,7 @@ import { InMemoryCategoryRepository } from './../../../category/test/repositorie
 import { InMemoryProductRepository } from './../../test/repositories/in-memory-product-repository';
 import { ResourceNotFoundError } from 'src/lib/common/errors/resource-not-found.error';
 import { RemoveCategoryFromProductUseCase } from './remove-category-from-product.use-case';
-import { ProductCategory } from '../../domain/entities/product-category';
+
 let sut: RemoveCategoryFromProductUseCase;
 let inMemoryProductRepository: InMemoryProductRepository;
 let inMemoryCategoryRepository: InMemoryCategoryRepository;
@@ -20,33 +20,22 @@ describe('RemoveCategoryFromProductUseCase', () => {
   it('should remove a category from a product', async () => {
     const category = makeFakeCategory();
     const product = makeFakeProduct({
-      categories: [
-        ProductCategory.create(
-          {
-            title: category.title,
-          },
-          category.id,
-        ),
-      ],
+      categoryIds: [category.id],
     });
     await inMemoryCategoryRepository.create(category);
     await inMemoryProductRepository.create(product);
 
     const productItem = inMemoryProductRepository.products[0];
 
-    expect(productItem.categories).toEqual([
-      expect.objectContaining({
-        title: category.title,
-      }),
-    ]);
-    expect(productItem.categories.length).toBe(1);
+    expect(productItem.categoryIds[0].toString()).toBe(category.id.toString());
+    expect(productItem.categoryIds.length).toBe(1);
 
     await sut.execute({
       productId: product.id.toString(),
       categoryIds: [category.id.toString()],
     });
     const updatedProduct = inMemoryProductRepository.products[0];
-    expect(updatedProduct.categories.length).toBe(0);
+    expect(updatedProduct.categoryIds.length).toBe(0);
   });
   it("should throw an error if the product doesn't exist", async () => {
     const category = makeFakeCategory();

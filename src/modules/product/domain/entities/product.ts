@@ -1,6 +1,5 @@
 import { Entity } from 'src/lib/common/entities/entity';
 import { Price } from '../value-objects/price';
-import { ProductCategory } from './product-category';
 import { Id } from 'src/lib/common/entities/id';
 import { ProductImage } from './product-image';
 import { Stock } from '../value-objects/stock';
@@ -10,7 +9,7 @@ export interface ProductProps {
   description: string;
   price: Price;
   stock: Stock;
-  categories: ProductCategory[];
+  categoryIds: Id[];
   images: ProductImage[];
   createdAt?: Date;
   updatedAt?: Date;
@@ -50,8 +49,8 @@ export class Product extends Entity<ProductProps> {
   get images() {
     return this.props.images;
   }
-  get categories() {
-    return this.props.categories;
+  get categoryIds() {
+    return this.props.categoryIds;
   }
   updateStock(newStock: Stock) {
     this.props.stock.updateQuantity(newStock.getQuantity());
@@ -92,24 +91,24 @@ export class Product extends Entity<ProductProps> {
     this.updateTimestamp();
   }
 
-  addCategoriesToProduct(categories: ProductCategory[]) {
+  addCategoriesToProduct(categoryIds: Id[]) {
     const currentCategoryIds = new Set(
-      this.props.categories.map((category) => category.id.toString()),
+      this.props.categoryIds.map((category) => category.toString()),
     );
 
-    categories.forEach((category) => {
-      if (!currentCategoryIds.has(category.id.toString())) {
-        this.props.categories.push(category);
-        currentCategoryIds.add(category.id.toString());
+    categoryIds.forEach((categoryId) => {
+      if (!currentCategoryIds.has(categoryId.toString())) {
+        this.props.categoryIds.push(categoryId);
+        currentCategoryIds.add(categoryId.toString());
       }
     });
+
     this.updateTimestamp();
   }
 
   removeCategoriesFromProduct(categoryIds: Id[]) {
-    this.props.categories = this.props.categories.filter(
-      (category) =>
-        !categoryIds.some((categoryId) => category.id.equals(categoryId)),
+    this.props.categoryIds = this.props.categoryIds.filter(
+      (categoryId) => !categoryIds.some((id) => categoryId.equals(id)),
     );
     this.updateTimestamp();
   }

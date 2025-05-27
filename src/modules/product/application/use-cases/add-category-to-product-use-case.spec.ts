@@ -4,7 +4,6 @@ import { InMemoryProductRepository } from '../../test/repositories/in-memory-pro
 import { makeFakeCategory } from 'src/modules/category/test/factories/make-fake-category';
 import { AddCategoryToProductUseCase } from './add-category-to-product.use-case';
 import { ResourceNotFoundError } from 'src/lib/common/errors/resource-not-found.error';
-import { ProductCategory } from '../../domain/entities/product-category';
 
 let sut: AddCategoryToProductUseCase;
 let inMemoryProductRepository: InMemoryProductRepository;
@@ -25,11 +24,7 @@ describe('AddCategoryToProductUseCase', () => {
     await inMemoryCategoryRepository.create(newCategory);
 
     const newProduct = makeFakeProduct({
-      categories: [
-        ProductCategory.create({
-          title: newCategory.title,
-        }),
-      ],
+      categoryIds: [newCategory.id],
     });
 
     await inMemoryProductRepository.create(newProduct);
@@ -43,7 +38,7 @@ describe('AddCategoryToProductUseCase', () => {
       categoryIds: [newCategory3.id.toString()],
     });
     const product = inMemoryProductRepository.products[0];
-    expect(product.categories).toHaveLength(2);
+    expect(product.categoryIds).toHaveLength(2);
   });
   it("should not be able to add a category to a product that doesn't exist", async () => {
     const newCategory = makeFakeCategory();

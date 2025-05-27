@@ -5,7 +5,6 @@ import { makeFakeCategory } from '../../test/factories/make-fake-category';
 import { ResourceNotFoundError } from 'src/lib/common/errors/resource-not-found.error';
 import { makeFakeProduct } from 'src/modules/product/test/factories/make-fake-product';
 import { NotAllowedError } from 'src/lib/common/errors/not-allowed.error';
-import { ProductCategory } from 'src/modules/product/domain/entities/product-category';
 
 let sut: RemoveCategoryUseCase;
 let inMemoryCategoryRepository: InMemoryCategoryRepository;
@@ -40,14 +39,7 @@ describe('RemoveCategoryUseCase', () => {
     await inMemoryCategoryRepository.create(newCategory);
 
     const newProduct = makeFakeProduct({
-      categories: [
-        ProductCategory.create(
-          {
-            title: newCategory.title,
-          },
-          newCategory.id,
-        ),
-      ],
+      categoryIds: [newCategory.id],
     });
     await inMemoryProductRepository.create(newProduct);
 
