@@ -1,8 +1,8 @@
 import { Entity } from 'src/lib/common/entities/entity';
 import { Price } from '../value-objects/price';
 import { Id } from 'src/lib/common/entities/id';
-import { ProductImage } from './product-image';
 import { Stock } from '../value-objects/stock';
+import { Optional } from 'src/lib/common/types/optional';
 
 export interface ProductProps {
   name: string;
@@ -10,16 +10,24 @@ export interface ProductProps {
   price: Price;
   stock: Stock;
   categoryIds: Id[];
-  images: ProductImage[];
-  createdAt?: Date;
-  updatedAt?: Date;
+  imageIds: Id[];
+  isActive: boolean;
+  createdAt: Date;
+  updatedAt: Date;
 }
 
 export class Product extends Entity<ProductProps> {
-  static create(props: ProductProps) {
+  static create(
+    props: Optional<
+      ProductProps,
+      'imageIds' | 'createdAt' | 'updatedAt' | 'isActive'
+    >,
+  ) {
     const now = new Date();
     return new Product({
       ...props,
+      imageIds: props.imageIds ?? [],
+      isActive: props.isActive ?? true,
       createdAt: now,
       updatedAt: now,
     });
@@ -46,11 +54,14 @@ export class Product extends Entity<ProductProps> {
   get description() {
     return this.props.description;
   }
-  get images() {
-    return this.props.images;
+  get imageIds() {
+    return this.props.imageIds;
   }
   get categoryIds() {
     return this.props.categoryIds;
+  }
+  get isActive() {
+    return this.props.isActive;
   }
   updateStock(newStock: Stock) {
     this.props.stock.updateQuantity(newStock.getQuantity());
@@ -71,23 +82,24 @@ export class Product extends Entity<ProductProps> {
     this.props.price = this.props.price.applyDiscount(discount);
     this.updateTimestamp();
   }
-  addImages(images: ProductImage[]) {
-    const currentImageIds = new Set(this.props.images.map((image) => image.id));
+  addImages(imageIds: Id[]) {
+    const currentImageIds = new Set(
+      this.props.imageIds.map((image) => image.toString()),
+    );
 
-    images.forEach((image) => {
-      if (!currentImageIds.has(image.id)) {
-        this.props.images.push(image);
-        currentImageIds.add(image.id);
+    imageIds.forEach((imageId) => {
+      if (!currentImageIds.has(imageId.toString())) {
+        this.props.imageIds.push(imageId);
+        currentImageIds.add(imageId.toString());
       }
     });
     this.updateTimestamp();
   }
 
   removeImages(imageIds: Id[]) {
-    this.props.images = this.props.images.filter(
-      (image) => !imageIds.some((imageId) => image.id.equals(imageId)),
+    this.props.imageIds = this.props.imageIds.filter(
+      (imageId) => !imageIds.some((id) => imageId.equals(id)),
     );
-
     this.updateTimestamp();
   }
 

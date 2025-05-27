@@ -37,8 +37,6 @@ describe('CreateProductUseCase', () => {
     expect(product.currentPrice).toBe(90);
     expect(product.getStock).toBe(newProduct.stock);
     expect(product.discount).toBe(10);
-    expect(product.images[0].path).toBe(newProduct.images[0].path);
-    expect(product.images[0].alt).toBe(newProduct.images[0].alt);
     expect(product.categoryIds[0].toString()).toBe(newCategory.id.toString());
   });
   it('should create a product with no discount', async () => {

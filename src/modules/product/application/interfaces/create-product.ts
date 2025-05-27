@@ -1,8 +1,3 @@
-export interface ImageProps {
-  path: string;
-  alt: string;
-}
-
 export interface ICreateProduct {
   name: string;
   description: string;
@@ -10,5 +5,4 @@ export interface ICreateProduct {
   discount?: number | null;
   stock: number;
   categoryIds: string[];
-  images: ImageProps[];
 }

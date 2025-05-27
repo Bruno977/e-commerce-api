@@ -7,7 +7,6 @@ import { Product } from '../../domain/entities/product';
 import { CategoryRepository } from 'src/modules/category/domain/repositories/category.repository';
 import { ResourceNotFoundError } from 'src/lib/common/errors/resource-not-found.error';
 import { Injectable } from '@nestjs/common';
-import { ProductImage } from '../../domain/entities/product-image';
 import { Stock } from '../../domain/value-objects/stock';
 import { Id } from 'src/lib/common/entities/id';
 
@@ -23,7 +22,6 @@ export class CreateProductUseCase {
     name,
     description,
     categoryIds,
-    images,
     price,
     stock,
     discount,
@@ -35,23 +33,14 @@ export class CreateProductUseCase {
     }
     const productCategories = categoryIds.map((category) => new Id(category));
 
-    const imagesToAdd = images.map((image) =>
-      ProductImage.create({
-        alt: image.alt,
-        path: image.path,
-      }),
-    );
-
     const newProduct = Product.create({
       name,
       description,
       categoryIds: [],
       price: Price.createWithDiscount(price, discount ?? 0),
-      images: [],
       stock: new Stock(stock),
     });
 
-    newProduct.addImages(imagesToAdd);
     newProduct.addCategoriesToProduct(productCategories);
 
     if (discount) {

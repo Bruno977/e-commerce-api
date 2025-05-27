@@ -2,7 +2,6 @@ import { faker } from '@faker-js/faker/.';
 import { Product, ProductProps } from '../../domain/entities/product';
 import { Price } from '../../domain/value-objects/price';
 import { ICreateProduct } from '../../application/interfaces/create-product';
-import { ProductImage } from '../../domain/entities/product-image';
 import { Stock } from '../../domain/value-objects/stock';
 import { Id } from 'src/lib/common/entities/id';
 
@@ -15,12 +14,7 @@ export function makeFakeProduct(override: Partial<ProductProps> = {}) {
       faker.number.int({ min: 0, max: 100 }),
     ),
     stock: new Stock(faker.number.int({ min: 0, max: 100 })),
-    images: [
-      ProductImage.create({
-        alt: faker.commerce.productName(),
-        path: faker.image.url(),
-      }),
-    ],
+    imageIds: [Id.create(faker.string.uuid())],
     categoryIds: [Id.create(faker.string.uuid())],
     createdAt: faker.date.past(),
     updatedAt: faker.date.recent(),
@@ -37,12 +31,6 @@ export function makeFakeProductData(
     price: parseFloat(faker.commerce.price()),
     discount: faker.number.int({ min: 1, max: 100 }),
     stock: faker.number.int({ min: 0, max: 100 }),
-    images: [
-      {
-        path: faker.image.url(),
-        alt: faker.commerce.productName(),
-      },
-    ],
     categoryIds: [faker.string.uuid()],
     ...override,
   };

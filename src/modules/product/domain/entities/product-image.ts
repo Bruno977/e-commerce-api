@@ -1,7 +1,7 @@
 import { Entity } from 'src/lib/common/entities/entity';
 import { Id } from 'src/lib/common/entities/id';
 
-interface ProductImageProps {
+export interface ProductImageProps {
   path: string;
   alt?: string;
 }
