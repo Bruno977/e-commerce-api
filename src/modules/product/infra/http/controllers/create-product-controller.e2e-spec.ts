@@ -51,10 +51,6 @@ describe('CreateProductController (E2E)', () => {
       name: 'Product 1',
       price: 100,
       discount: 10,
-      images: [
-        { path: '/image1.jpg', alt: 'Image 1' },
-        { path: '/image2.jpg', alt: 'Image 2' },
-      ],
       categoryIds: [category1.id, category2.id],
     });
 
@@ -74,32 +70,7 @@ describe('CreateProductController (E2E)', () => {
     expect(product?.originalPrice).toBe(100);
     expect(product?.stock).toBe(newProduct.stock);
     expect(product?.discount).toBe(10);
-    expect(product?.images).toHaveLength(2);
-    expect(product?.images).toEqual(
-      expect.arrayContaining([
-        expect.objectContaining({
-          alt: 'Image 1',
-          path: '/image1.jpg',
-        }),
-        expect.objectContaining({
-          alt: 'Image 2',
-          path: '/image2.jpg',
-        }),
-      ]),
-    );
+    expect(product?.images).toHaveLength(0);
     expect(product?.categories).toHaveLength(2);
-
-    expect(product?.categories).toEqual(
-      expect.arrayContaining([
-        expect.objectContaining({
-          id: category1.id,
-          title: category1.title,
-        }),
-        expect.objectContaining({
-          id: category2.id,
-          title: category2.title,
-        }),
-      ]),
-    );
   });
 });

@@ -22,15 +22,19 @@ export class Product extends Entity<ProductProps> {
       ProductProps,
       'imageIds' | 'createdAt' | 'updatedAt' | 'isActive'
     >,
+    id?: Id,
   ) {
     const now = new Date();
-    return new Product({
-      ...props,
-      imageIds: props.imageIds ?? [],
-      isActive: props.isActive ?? true,
-      createdAt: now,
-      updatedAt: now,
-    });
+    return new Product(
+      {
+        ...props,
+        imageIds: props.imageIds ?? [],
+        isActive: props.isActive ?? true,
+        createdAt: now,
+        updatedAt: now,
+      },
+      id,
+    );
   }
 
   private updateTimestamp() {

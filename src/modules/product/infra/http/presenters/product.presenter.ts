@@ -8,12 +8,11 @@ export class ProductPresenter {
       price: product?.currentPrice,
       originalPrice: product?.originalPrice,
       discount: product?.discount,
-      stock: product?.stock,
-      images: product?.images.map((image) => ({
-        alt: image.altText,
-        path: image?.imagePath,
-      })),
-      categories: product?.categoriesIds,
+      stock: product?.getStock,
+      categories: product?.categoryIds.map((categoryId) =>
+        categoryId.toString(),
+      ),
+      images: product?.imageIds,
     };
   }
 }

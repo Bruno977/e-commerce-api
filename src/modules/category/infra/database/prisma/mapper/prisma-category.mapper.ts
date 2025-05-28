@@ -1,4 +1,5 @@
 import { Prisma, Category as PrismaCategory } from '@prisma/client';
+import { Id } from 'src/lib/common/entities/id';
 import { Category } from 'src/modules/category/domain/entities/category';
 import { Slug } from 'src/modules/category/domain/value-objects/slug';
 
@@ -21,7 +22,7 @@ export class PrismaCategoryMapper {
         createdAt: category.createdAt,
         updatedAt: category.updatedAt,
       },
-      category.id,
+      new Id(category.id),
     );
   }
 }

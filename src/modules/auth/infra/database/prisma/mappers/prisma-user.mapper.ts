@@ -1,4 +1,5 @@
 import { Prisma, User as UserPrisma } from '@prisma/client';
+import { Id } from 'src/lib/common/entities/id';
 import { User } from 'src/modules/auth/domain/entities/user';
 import { Email } from 'src/modules/auth/domain/value-objects/email';
 import { Password } from 'src/modules/auth/domain/value-objects/password';
@@ -23,7 +24,7 @@ export class PrismaUserMapper {
         createdAt: raw.createdAt,
         updatedAt: raw.updatedAt,
       },
-      raw.id,
+      Id.create(raw.id),
     );
   }
 }

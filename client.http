@@ -11,8 +11,8 @@ Content-Type: application/json
 
 {
   "name": "Bruno Rodrigues",
-  "email": "bruno3@example.com.br",
-  "role": "viewer",
+  "email": "bruno1@example.com.br",
+  "role": "admin",
   "password": "123456"
 }
 
@@ -23,7 +23,7 @@ POST {{baseUrl}}/sessions
 Content-Type: application/json
 
 {
-  "email": "bruno2@example.com.br",
+  "email": "bruno1@example.com.br",
   "password": "123456"
 }
 
@@ -52,7 +52,7 @@ Content-Type: application/json
 ###
 
 # @name find_category_by_slug
-GET {{baseUrl}}/categories/slug/category-1
+GET {{baseUrl}}/categories/slug/category-3
 Content-Type: application/json
 
 ###
@@ -91,17 +91,8 @@ Authorization: Bearer {{authToken}}
   "price": 100,
   "discount": 10,
   "stock": 50,
-  "categoryIds": ["ca058a46-ca91-4b1e-82a0-f60eee50f13b"],
-  "images": [
-    {
-      "path": "https://example.com/image1.jpg",
-      "alt": "Image 1"
-    },
-    {
-      "path": "https://example.com/image2.jpg",
-      "alt": "Image 2"
-    }
-  ]
+  "categoryIds": ["7feef6a9-5ff3-425c-8cb6-209c81de8ac0"],
+  "imageIds": []
 }
 
 ###
