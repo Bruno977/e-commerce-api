@@ -4,11 +4,13 @@ import { ProductRepository } from '../../domain/repositories/product.repository'
 import { IUpdateProductDetails } from '../interfaces/update-product-details';
 import { Stock } from '../../domain/value-objects/stock';
 import { Price } from '../../domain/value-objects/price';
+import { Injectable } from '@nestjs/common';
 
 type ResponseUpdateProductDetailsUseCase = Promise<
   Either<ResourceNotFoundError, null>
 >;
 
+@Injectable()
 export class UpdateProductDetailsUseCase {
   constructor(private productRepository: ProductRepository) {}
 
