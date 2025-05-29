@@ -8,18 +8,22 @@ import { UpdateProductDetailsController } from './controllers/update-product-det
 import { UpdateProductDetailsUseCase } from '../../application/use-cases/update-product-details.use-case';
 import { RemoveProductController } from './controllers/remove-product.controller';
 import { RemoveProductUseCase } from '../../application/use-cases/remove-product.use-case';
+import { FindAllProductsController } from './controllers/find-all-products.controller';
+import { FindAllProductsUseCase } from '../../application/use-cases/find-all-products.use-case';
 
 @Module({
   imports: [DatabaseModule],
   controllers: [
     CreateProductController,
     FindProductByIdController,
+    FindAllProductsController,
     UpdateProductDetailsController,
     RemoveProductController,
   ],
   providers: [
     CreateProductUseCase,
     FindProductByIdUseCase,
+    FindAllProductsUseCase,
     UpdateProductDetailsUseCase,
     RemoveProductUseCase,
   ],
