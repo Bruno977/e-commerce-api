@@ -12,6 +12,8 @@ import { FindAllProductsController } from './controllers/find-all-products.contr
 import { FindAllProductsUseCase } from '../../application/use-cases/find-all-products.use-case';
 import { AddCategoryToProductController } from './controllers/add-category-to-product.controller';
 import { AddCategoryToProductUseCase } from '../../application/use-cases/add-category-to-product.use-case';
+import { RemoveCategoryFromProductController } from './controllers/remove-category-from-product.controller';
+import { RemoveCategoryFromProductUseCase } from '../../application/use-cases/remove-category-from-product.use-case';
 
 @Module({
   imports: [DatabaseModule],
@@ -22,6 +24,7 @@ import { AddCategoryToProductUseCase } from '../../application/use-cases/add-cat
     UpdateProductDetailsController,
     RemoveProductController,
     AddCategoryToProductController,
+    RemoveCategoryFromProductController,
   ],
   providers: [
     CreateProductUseCase,
@@ -30,6 +33,7 @@ import { AddCategoryToProductUseCase } from '../../application/use-cases/add-cat
     UpdateProductDetailsUseCase,
     RemoveProductUseCase,
     AddCategoryToProductUseCase,
+    RemoveCategoryFromProductUseCase,
   ],
 })
 export class ProductHttpModule {}

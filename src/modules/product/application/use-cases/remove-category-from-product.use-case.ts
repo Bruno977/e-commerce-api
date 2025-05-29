@@ -4,11 +4,12 @@ import { ProductRepository } from '../../domain/repositories/product.repository'
 import { CategoryRepository } from 'src/modules/category/domain/repositories/category.repository';
 import { IRemoveCategoryFromProduct } from '../interfaces/remove-category-from-product';
 import { Id } from 'src/lib/common/entities/id';
+import { Injectable } from '@nestjs/common';
 
 type ResponseRemoveCategoryFromProductUseCase = Promise<
   Either<ResourceNotFoundError, null>
 >;
-
+@Injectable()
 export class RemoveCategoryFromProductUseCase {
   constructor(
     private readonly productRepository: ProductRepository,

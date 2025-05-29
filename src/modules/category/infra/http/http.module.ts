@@ -6,10 +6,10 @@ import { FindCategoryByIdController } from './controllers/find-category-by-id.co
 import { FindCategoryByIdUseCase } from '../../application/use-cases/find-category-by-id.use-case';
 import { FindCategoryBySlugController } from './controllers/find-category-by-slug.controller';
 import { FindCategoryBySlugUseCase } from '../../application/use-cases/find-category-by-slug.use-case';
-import { RemoveCategoryController } from './controllers/remove-category.controller';
 import { RemoveCategoryUseCase } from '../../application/use-cases/remove-category.use-case';
 import { UpdateCategoryDetailsController } from './controllers/update-category-details.controller';
 import { UpdateCategoryDetailsUseCase } from '../../application/use-cases/update-category-details.use-case';
+import { RemoveCategoryController } from './controllers/remove-category.controller';
 
 @Module({
   imports: [DatabaseModule],
