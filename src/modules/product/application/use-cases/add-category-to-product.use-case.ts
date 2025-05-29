@@ -4,11 +4,13 @@ import { Product } from '../../domain/entities/product';
 import { ProductRepository } from '../../domain/repositories/product.repository';
 import { CategoryRepository } from 'src/modules/category/domain/repositories/category.repository';
 import { IAddCategoryToProduct } from '../interfaces/add-category-to-product';
+import { Injectable } from '@nestjs/common';
 
 type ResponseAddCategoryToProductUseCase = Promise<
   Either<ResourceNotFoundError, { product: Product }>
 >;
 
+@Injectable()
 export class AddCategoryToProductUseCase {
   constructor(
     private productRepository: ProductRepository,
@@ -25,7 +27,7 @@ export class AddCategoryToProductUseCase {
     }
     const existCategories =
       await this.categoryRepository.findByIds(categoryIds);
-    if (!existCategories) {
+    if (!existCategories || existCategories.length === 0) {
       return left(new ResourceNotFoundError(`Category not found`));
     }
     const categoriesToAdd = existCategories.map((category) => category.id);
