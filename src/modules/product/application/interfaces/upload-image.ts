@@ -1,4 +1,5 @@
 export interface IUploadImage {
-  path: string;
-  alt: string;
+  fileName: string;
+  fileType: string;
+  body: Buffer;
 }

@@ -14,11 +14,11 @@ describe('RemoveImageUseCase', () => {
     const image = makeFakeImage();
     await inMemoryImageRepository.create(image);
     expect(inMemoryImageRepository.images).toHaveLength(1);
-    await sut.execute([image.id.toString()]);
+    await sut.execute(image.id.toString());
     expect(inMemoryImageRepository.images).toHaveLength(0);
   });
   it("should throw if image doesn't exist", async () => {
-    const result = await sut.execute(['non-existing-image-id']);
+    const result = await sut.execute('non-existing-image-id');
     expect(result.isLeft()).toBe(true);
     expect(result.value).toBeInstanceOf(ResourceNotFoundError);
   });
