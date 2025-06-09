@@ -7,9 +7,6 @@ export class InMemoryImageRepository implements ImageRepository {
   async create(image: ProductImage) {
     this.images.push(image);
   }
-  async createMany(images: ProductImage[]) {
-    this.images.push(...images);
-  }
   async findById(id: string) {
     const image = this.images.find((image) => image.id.toString() === id);
     if (!image) {
@@ -31,10 +28,5 @@ export class InMemoryImageRepository implements ImageRepository {
     if (index !== -1) {
       this.images.splice(index, 1);
     }
-  }
-  async deleteMany(ids: string[]) {
-    this.images = this.images.filter(
-      (image) => !ids.includes(image.id.toString()),
-    );
   }
 }
