@@ -21,7 +21,7 @@ export class PrismaProductRepository implements ProductRepository {
       },
       include: {
         categories: true,
-        images: true,
+        attachments: true,
       },
     });
     if (!product) {
@@ -38,7 +38,7 @@ export class PrismaProductRepository implements ProductRepository {
       },
       include: {
         categories: true,
-        images: true,
+        attachments: true,
       },
     });
     if (!products) {
@@ -57,7 +57,7 @@ export class PrismaProductRepository implements ProductRepository {
       },
       include: {
         categories: true,
-        images: true,
+        attachments: true,
       },
     });
     if (!products) {
@@ -69,7 +69,7 @@ export class PrismaProductRepository implements ProductRepository {
     const products = await this.prisma.product.findMany({
       include: {
         categories: true,
-        images: true,
+        attachments: true,
       },
     });
     if (!products) {
@@ -93,7 +93,7 @@ export class PrismaProductRepository implements ProductRepository {
       data,
       include: {
         categories: true,
-        images: true,
+        attachments: true,
       },
     });
   }

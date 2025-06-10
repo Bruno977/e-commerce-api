@@ -14,7 +14,7 @@ export class PrismaProductMapper {
   static toDomain(
     prismaProduct: ProductPrisma & {
       categories: CategoryProps[];
-      images: AttachmentProps[];
+      attachments: AttachmentProps[];
     },
   ): Product {
     return Product.create(
@@ -32,7 +32,7 @@ export class PrismaProductMapper {
           Id.create(category.id),
         ),
         isActive: prismaProduct.isActive,
-        attachmentIds: prismaProduct.images.map((attachment) =>
+        attachmentIds: prismaProduct.attachments.map((attachment) =>
           Id.create(attachment.id),
         ),
       },

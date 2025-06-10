@@ -53,7 +53,7 @@ describe('findByIdController (E2E)', () => {
       discount: 10,
       stock: product.stock,
       categories: [category.id],
-      images: [],
+      attachments: [],
     });
   });
 });

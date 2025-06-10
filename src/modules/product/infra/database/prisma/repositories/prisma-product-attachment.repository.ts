@@ -10,12 +10,12 @@ export class PrismaProductAttachmentRepository implements AttachmentRepository {
 
   async create(attachment: Attachment): Promise<void> {
     const data = PrismaProductAttachmentMapper.toPrisma(attachment);
-    await this.prisma.productImage.create({
+    await this.prisma.attachment.create({
       data,
     });
   }
   async findById(id: string): Promise<Attachment | null> {
-    const productAttachment = await this.prisma.productImage.findUnique({
+    const productAttachment = await this.prisma.attachment.findUnique({
       where: { id },
     });
     if (!productAttachment) {
@@ -24,7 +24,7 @@ export class PrismaProductAttachmentRepository implements AttachmentRepository {
     return PrismaProductAttachmentMapper.toDomain(productAttachment);
   }
   async findByIds(ids: string[]): Promise<Attachment[]> {
-    const productAttachments = await this.prisma.productImage.findMany({
+    const productAttachments = await this.prisma.attachment.findMany({
       where: {
         id: {
           in: ids,
@@ -36,7 +36,7 @@ export class PrismaProductAttachmentRepository implements AttachmentRepository {
     );
   }
   async delete(id: string): Promise<void> {
-    await this.prisma.productImage.delete({
+    await this.prisma.attachment.delete({
       where: { id },
     });
   }

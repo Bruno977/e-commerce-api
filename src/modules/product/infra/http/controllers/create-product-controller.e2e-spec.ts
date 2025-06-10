@@ -62,7 +62,7 @@ describe('CreateProductController (E2E)', () => {
     expect(response.status).toBe(201);
     const product = await prisma.product.findFirst({
       where: { name: 'Product 1' },
-      include: { images: true, categories: true },
+      include: { attachments: true, categories: true },
     });
     expect(product?.name).toBe('Product 1');
     expect(product?.description).toBe(newProduct.description);
@@ -70,7 +70,7 @@ describe('CreateProductController (E2E)', () => {
     expect(product?.originalPrice).toBe(100);
     expect(product?.stock).toBe(newProduct.stock);
     expect(product?.discount).toBe(10);
-    expect(product?.images).toHaveLength(0);
+    expect(product?.attachments).toHaveLength(0);
     expect(product?.categories).toHaveLength(2);
   });
 });
