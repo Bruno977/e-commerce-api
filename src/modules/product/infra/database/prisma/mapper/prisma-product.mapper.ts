@@ -4,7 +4,7 @@ import { Price } from 'src/modules/product/domain/value-objects/price';
 import { Stock } from 'src/modules/product/domain/value-objects/stock';
 import { Id } from 'src/lib/common/entities/id';
 
-interface ImageProps {
+interface AttachmentProps {
   id: string;
 }
 interface CategoryProps {
@@ -14,7 +14,7 @@ export class PrismaProductMapper {
   static toDomain(
     prismaProduct: ProductPrisma & {
       categories: CategoryProps[];
-      images: ImageProps[];
+      images: AttachmentProps[];
     },
   ): Product {
     return Product.create(
@@ -32,7 +32,9 @@ export class PrismaProductMapper {
           Id.create(category.id),
         ),
         isActive: prismaProduct.isActive,
-        imageIds: prismaProduct.images.map((image) => Id.create(image.id)),
+        attachmentIds: prismaProduct.images.map((attachment) =>
+          Id.create(attachment.id),
+        ),
       },
       Id.create(prismaProduct.id),
     );

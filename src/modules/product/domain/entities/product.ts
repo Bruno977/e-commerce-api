@@ -10,7 +10,7 @@ export interface ProductProps {
   price: Price;
   stock: Stock;
   categoryIds: Id[];
-  imageIds: Id[];
+  attachmentIds: Id[];
   isActive: boolean;
   createdAt: Date;
   updatedAt: Date;
@@ -20,7 +20,7 @@ export class Product extends Entity<ProductProps> {
   static create(
     props: Optional<
       ProductProps,
-      'imageIds' | 'createdAt' | 'updatedAt' | 'isActive'
+      'attachmentIds' | 'createdAt' | 'updatedAt' | 'isActive'
     >,
     id?: Id,
   ) {
@@ -28,7 +28,7 @@ export class Product extends Entity<ProductProps> {
     return new Product(
       {
         ...props,
-        imageIds: props.imageIds ?? [],
+        attachmentIds: props.attachmentIds ?? [],
         isActive: props.isActive ?? true,
         createdAt: now,
         updatedAt: now,
@@ -58,8 +58,8 @@ export class Product extends Entity<ProductProps> {
   get description() {
     return this.props.description;
   }
-  get imageIds() {
-    return this.props.imageIds;
+  get attachmentIds() {
+    return this.props.attachmentIds;
   }
   get categoryIds() {
     return this.props.categoryIds;
@@ -86,23 +86,23 @@ export class Product extends Entity<ProductProps> {
     this.props.price = this.props.price.applyDiscount(discount);
     this.updateTimestamp();
   }
-  addImages(imageIds: Id[]) {
-    const currentImageIds = new Set(
-      this.props.imageIds.map((image) => image.toString()),
+  addAttachments(attachmentIds: Id[]) {
+    const currentAttachmentIds = new Set(
+      this.props.attachmentIds.map((attachment) => attachment.toString()),
     );
 
-    imageIds.forEach((imageId) => {
-      if (!currentImageIds.has(imageId.toString())) {
-        this.props.imageIds.push(imageId);
-        currentImageIds.add(imageId.toString());
+    attachmentIds.forEach((attachmentId) => {
+      if (!currentAttachmentIds.has(attachmentId.toString())) {
+        this.props.attachmentIds.push(attachmentId);
+        currentAttachmentIds.add(attachmentId.toString());
       }
     });
     this.updateTimestamp();
   }
 
-  removeImages(imageIds: Id[]) {
-    this.props.imageIds = this.props.imageIds.filter(
-      (imageId) => !imageIds.some((id) => imageId.equals(id)),
+  removeAttachments(attachmentIds: Id[]) {
+    this.props.attachmentIds = this.props.attachmentIds.filter(
+      (attachmentId) => !attachmentIds.some((id) => attachmentId.equals(id)),
     );
     this.updateTimestamp();
   }

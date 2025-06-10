@@ -92,7 +92,7 @@ Authorization: Bearer {{authToken}}
   "discount": 10,
   "stock": 50,
   "categoryIds": ["7feef6a9-5ff3-425c-8cb6-209c81de8ac0"],
-  "imageIds": []
+  "attachmentIds": []
 }
 
 ###

@@ -1,4 +1,4 @@
-export interface IUploadImage {
+export interface IUploadAttachment {
   fileName: string;
   fileType: string;
   body: Buffer;

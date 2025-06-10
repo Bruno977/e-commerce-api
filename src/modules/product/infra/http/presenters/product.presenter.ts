@@ -12,7 +12,7 @@ export class ProductPresenter {
       categories: product?.categoryIds.map((categoryId) =>
         categoryId.toString(),
       ),
-      images: product?.imageIds,
+      images: product?.attachmentIds,
     };
   }
 }

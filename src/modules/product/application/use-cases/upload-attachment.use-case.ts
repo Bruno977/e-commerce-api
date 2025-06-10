@@ -1,31 +1,33 @@
 import { Either, left, right } from 'src/lib/common/either/either';
-import { ProductImage } from '../../domain/entities/product-image';
-import { IUploadImage } from '../interfaces/upload-image';
-import { ImageRepository } from '../../domain/repositories/image.repository';
+
 import { Uploader } from 'src/modules/product/application/storage/uploader';
 import { Injectable } from '@nestjs/common';
 import { InvalidValueError } from 'src/lib/common/errors/invalid-value-error';
+import { Attachment } from '../../domain/entities/attachment';
+import { AttachmentRepository } from '../../domain/repositories/attachment.repository';
+import { IUploadAttachment } from '../interfaces/upload-attachment';
 
-type UploadImagesUseCaseResponse = Promise<
+type UploadAttachmentsUseCaseResponse = Promise<
   Either<
     InvalidValueError,
     {
-      image: ProductImage;
+      attachment: Attachment;
     }
   >
 >;
 @Injectable()
-export class UploadImagesUseCase {
+export class UploadAttachmentUseCase {
   constructor(
-    private imageRepository: ImageRepository,
+    private attachmentRepository: AttachmentRepository,
     private uploaderRepository: Uploader,
   ) {}
   async execute({
     fileType,
     fileName,
     body,
-  }: IUploadImage): UploadImagesUseCaseResponse {
+  }: IUploadAttachment): UploadAttachmentsUseCaseResponse {
     if (!/^(image\/(jpeg|png))$|^application\/pdf$/.test(fileType)) {
+      console.log('Uploading attachment:', fileName, fileType);
       return left(new InvalidValueError(fileType));
     }
     const { url } = await this.uploaderRepository.upload({
@@ -33,15 +35,15 @@ export class UploadImagesUseCase {
       fileType,
       body,
     });
-    const image = ProductImage.create({
-      alt: fileName,
-      path: url,
+    const attachment = Attachment.create({
+      title: fileName,
+      url,
     });
 
-    await this.imageRepository.create(image);
+    await this.attachmentRepository.create(attachment);
 
     return right({
-      image,
+      attachment,
     });
   }
 }

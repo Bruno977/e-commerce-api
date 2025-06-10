@@ -14,9 +14,9 @@ import { AddCategoryToProductController } from './controllers/add-category-to-pr
 import { AddCategoryToProductUseCase } from '../../application/use-cases/add-category-to-product.use-case';
 import { RemoveCategoryFromProductController } from './controllers/remove-category-from-product.controller';
 import { RemoveCategoryFromProductUseCase } from '../../application/use-cases/remove-category-from-product.use-case';
-import { UploadImagesController } from './controllers/upload-images.controller';
-import { UploadImagesUseCase } from '../../application/use-cases/upload-images.use-case';
 import { StorageModule } from '../storage/storage.module';
+import { UploadAttachmentUseCase } from '../../application/use-cases/upload-attachment.use-case';
+import { UploadAttachmentController } from './controllers/upload-attachment.controller';
 
 @Module({
   imports: [DatabaseModule, StorageModule],
@@ -28,7 +28,7 @@ import { StorageModule } from '../storage/storage.module';
     RemoveProductController,
     AddCategoryToProductController,
     RemoveCategoryFromProductController,
-    UploadImagesController,
+    UploadAttachmentController,
   ],
   providers: [
     CreateProductUseCase,
@@ -38,7 +38,7 @@ import { StorageModule } from '../storage/storage.module';
     RemoveProductUseCase,
     AddCategoryToProductUseCase,
     RemoveCategoryFromProductUseCase,
-    UploadImagesUseCase,
+    UploadAttachmentUseCase,
   ],
 })
 export class ProductHttpModule {}

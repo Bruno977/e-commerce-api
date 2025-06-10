@@ -4,8 +4,8 @@ import { PrismaProductRepository } from './prisma/repositories/prisma-product.re
 import { ProductRepository } from '../../domain/repositories/product.repository';
 import { CategoryRepository } from 'src/modules/category/domain/repositories/category.repository';
 import { PrismaCategoryRepository } from 'src/modules/category/infra/database/prisma/repositories/prisma-category-repository';
-import { PrismaProductImageRepository } from './prisma/repositories/prisma-product-image.repository';
-import { ImageRepository } from '../../domain/repositories/image.repository';
+import { AttachmentRepository } from '../../domain/repositories/attachment.repository';
+import { PrismaProductAttachmentRepository } from './prisma/repositories/prisma-product-attachment.repository';
 
 @Module({
   providers: [
@@ -19,10 +19,10 @@ import { ImageRepository } from '../../domain/repositories/image.repository';
       useClass: PrismaCategoryRepository,
     },
     {
-      provide: ImageRepository,
-      useClass: PrismaProductImageRepository,
+      provide: AttachmentRepository,
+      useClass: PrismaProductAttachmentRepository,
     },
   ],
-  exports: [ProductRepository, CategoryRepository, ImageRepository],
+  exports: [ProductRepository, CategoryRepository, AttachmentRepository],
 })
 export class DatabaseModule {}

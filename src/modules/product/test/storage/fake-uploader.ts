@@ -10,12 +10,13 @@ export class FakeUploader implements Uploader {
   public uploads: Upload[] = [];
   async upload({ fileName }: UploaderProps) {
     const url = randomUUID();
+    const uniqueUrl = `${url}-${fileName}`;
     this.uploads.push({
       fileName,
-      url,
+      url: uniqueUrl,
     });
     return {
-      url,
+      url: uniqueUrl,
     };
   }
 }

@@ -42,7 +42,7 @@ export class CreateProductControllerDTO {
     message: 'Each "categoryId" must be a valid UUID.',
   })
   @IsOptional()
-  imageIds: string[];
+  attachmentIds: string[];
 
   @IsBoolean({ message: 'The "isActive" field must be a boolean.' })
   @IsOptional()

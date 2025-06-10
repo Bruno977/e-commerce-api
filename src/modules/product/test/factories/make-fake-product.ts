@@ -14,7 +14,7 @@ export function makeFakeProduct(override: Partial<ProductProps> = {}) {
       faker.number.int({ min: 0, max: 100 }),
     ),
     stock: new Stock(faker.number.int({ min: 0, max: 100 })),
-    imageIds: [Id.create(faker.string.uuid())],
+    attachmentIds: [Id.create(faker.string.uuid())],
     categoryIds: [Id.create(faker.string.uuid())],
     createdAt: faker.date.past(),
     updatedAt: faker.date.recent(),

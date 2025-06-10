@@ -7,7 +7,7 @@ import { PrismaUserMapper } from 'src/modules/auth/infra/database/prisma/mappers
 import { makeFakeUser } from 'src/modules/auth/test/factories/make-fake-user';
 import * as request from 'supertest';
 
-describe('UploadImagesController (E2E)', () => {
+describe('UploadAttachmentController (E2E)', () => {
   let app: INestApplication;
   let prisma: PrismaService;
   let jwt: JwtService;

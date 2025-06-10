@@ -8,16 +8,16 @@ import {
   UploadedFile,
   UseInterceptors,
 } from '@nestjs/common';
-import { UploadImagesUseCase } from 'src/modules/product/application/use-cases/upload-images.use-case';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { AuthRoles } from 'src/lib/common/infra/decorators/auth-roles.decorator';
 import { UserRole } from 'src/modules/auth/domain/enums/user-role.enum';
 import { mapAppErrorToHttpException } from 'src/lib/common/http-exceptions/map-app-error-to-http-exception';
+import { UploadAttachmentUseCase } from 'src/modules/product/application/use-cases/upload-attachment.use-case';
 
 @Controller('/files')
 @AuthRoles(UserRole.ADMIN)
-export class UploadImagesController {
-  constructor(private uploadImages: UploadImagesUseCase) {}
+export class UploadAttachmentController {
+  constructor(private uploadAttachment: UploadAttachmentUseCase) {}
   @Post()
   @HttpCode(201)
   @UseInterceptors(FileInterceptor('file'))
@@ -36,7 +36,7 @@ export class UploadImagesController {
     )
     file: Express.Multer.File,
   ) {
-    const result = await this.uploadImages.execute({
+    const result = await this.uploadAttachment.execute({
       fileType: file.mimetype,
       fileName: file.fieldname,
       body: file.buffer,
@@ -44,9 +44,9 @@ export class UploadImagesController {
     if (result.isLeft()) {
       throw mapAppErrorToHttpException(result.value);
     }
-    const { image } = result.value;
+    const { attachment } = result.value;
     return {
-      attachmentId: image.id.toString(),
+      attachmentId: attachment.id.toString(),
     };
   }
 }
