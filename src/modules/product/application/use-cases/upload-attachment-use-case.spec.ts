@@ -1,18 +1,18 @@
 import { InMemoryAttachmentRepository } from '../../test/repositories/in-memory-attachment.repository';
-import { FakeUploader } from '../../test/storage/fake-uploader';
+import { FakeAttachmentStorage } from '../../test/storage/fake-attachment-storage';
 import { UploadAttachmentUseCase } from './upload-attachment.use-case';
 
 let sut: UploadAttachmentUseCase;
 let inMemoryAttachmentRepository: InMemoryAttachmentRepository;
-let fakeUploader: FakeUploader;
+let fakeAttachmentStorage: FakeAttachmentStorage;
 
 describe('UploadAttachmentUseCase', () => {
   beforeEach(() => {
     inMemoryAttachmentRepository = new InMemoryAttachmentRepository();
-    fakeUploader = new FakeUploader();
+    fakeAttachmentStorage = new FakeAttachmentStorage();
     sut = new UploadAttachmentUseCase(
       inMemoryAttachmentRepository,
-      fakeUploader,
+      fakeAttachmentStorage,
     );
   });
 

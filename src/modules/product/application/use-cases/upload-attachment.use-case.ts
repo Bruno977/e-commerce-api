@@ -1,11 +1,11 @@
 import { Either, left, right } from 'src/lib/common/either/either';
 
-import { Uploader } from 'src/modules/product/application/storage/uploader';
 import { Injectable } from '@nestjs/common';
 import { InvalidValueError } from 'src/lib/common/errors/invalid-value-error';
 import { Attachment } from '../../domain/entities/attachment';
 import { AttachmentRepository } from '../../domain/repositories/attachment.repository';
 import { IUploadAttachment } from '../interfaces/upload-attachment';
+import { AttachmentStorage } from '../storage/uploader';
 
 type UploadAttachmentsUseCaseResponse = Promise<
   Either<
@@ -19,7 +19,7 @@ type UploadAttachmentsUseCaseResponse = Promise<
 export class UploadAttachmentUseCase {
   constructor(
     private attachmentRepository: AttachmentRepository,
-    private uploaderRepository: Uploader,
+    private attachmentStorage: AttachmentStorage,
   ) {}
   async execute({
     fileType,
@@ -30,7 +30,7 @@ export class UploadAttachmentUseCase {
       console.log('Uploading attachment:', fileName, fileType);
       return left(new InvalidValueError(fileType));
     }
-    const { url } = await this.uploaderRepository.upload({
+    const { url } = await this.attachmentStorage.upload({
       fileName,
       fileType,
       body,

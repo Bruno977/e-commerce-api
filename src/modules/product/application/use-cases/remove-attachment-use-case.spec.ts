@@ -3,13 +3,19 @@ import { ResourceNotFoundError } from 'src/lib/common/errors/resource-not-found.
 import { InMemoryAttachmentRepository } from '../../test/repositories/in-memory-attachment.repository';
 import { RemoveAttachmentUseCase } from './remove-attachment.use-case';
 import { makeFakeAttachment } from '../../test/factories/make-fake-attachment';
+import { FakeAttachmentStorage } from '../../test/storage/fake-attachment-storage';
 
 let sut: RemoveAttachmentUseCase;
+let fakeAttachmentStorage: FakeAttachmentStorage;
 let inMemoryAttachmentRepository: InMemoryAttachmentRepository;
 describe('RemoveAttachmentUseCase', () => {
   beforeEach(() => {
     inMemoryAttachmentRepository = new InMemoryAttachmentRepository();
-    sut = new RemoveAttachmentUseCase(inMemoryAttachmentRepository);
+    fakeAttachmentStorage = new FakeAttachmentStorage();
+    sut = new RemoveAttachmentUseCase(
+      inMemoryAttachmentRepository,
+      fakeAttachmentStorage,
+    );
   });
   it('should remove an attachment from a product', async () => {
     const attachment = makeFakeAttachment();

@@ -1,12 +1,15 @@
 import { randomUUID } from 'node:crypto';
-import { Uploader, UploaderProps } from '../../application/storage/uploader';
+import {
+  AttachmentStorage,
+  UploaderProps,
+} from '../../application/storage/uploader';
 
 interface Upload {
   fileName: string;
   url: string;
 }
 
-export class FakeUploader implements Uploader {
+export class FakeAttachmentStorage implements AttachmentStorage {
   public uploads: Upload[] = [];
   async upload({ fileName }: UploaderProps) {
     const url = randomUUID();
@@ -18,5 +21,11 @@ export class FakeUploader implements Uploader {
     return {
       url: uniqueUrl,
     };
+  }
+  async delete(key: string) {
+    const index = this.uploads.findIndex((upload) => upload.url === key);
+    if (index !== -1) {
+      this.uploads.splice(index, 1);
+    }
   }
 }
