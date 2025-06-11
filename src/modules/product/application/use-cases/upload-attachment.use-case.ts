@@ -40,10 +40,10 @@ export class UploadAttachmentUseCase {
       url,
     });
 
-    await this.attachmentRepository.create(attachment);
+    const result = await this.attachmentRepository.create(attachment);
 
     return right({
-      attachment,
+      attachment: result,
     });
   }
 }

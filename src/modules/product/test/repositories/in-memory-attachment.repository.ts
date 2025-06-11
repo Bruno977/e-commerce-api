@@ -6,6 +6,7 @@ export class InMemoryAttachmentRepository implements AttachmentRepository {
 
   async create(attachment: Attachment) {
     this.attachments.push(attachment);
+    return attachment;
   }
   async findById(id: string) {
     const attachment = this.attachments.find(

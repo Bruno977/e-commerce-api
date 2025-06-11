@@ -8,11 +8,12 @@ import { PrismaProductAttachmentMapper } from '../mapper/prisma-product-attachme
 export class PrismaProductAttachmentRepository implements AttachmentRepository {
   constructor(private prisma: PrismaService) {}
 
-  async create(attachment: Attachment): Promise<void> {
+  async create(attachment: Attachment) {
     const data = PrismaProductAttachmentMapper.toPrisma(attachment);
-    await this.prisma.attachment.create({
+    const newAttachment = await this.prisma.attachment.create({
       data,
     });
+    return PrismaProductAttachmentMapper.toDomain(newAttachment);
   }
   async findById(id: string): Promise<Attachment | null> {
     const productAttachment = await this.prisma.attachment.findUnique({
