@@ -90,7 +90,15 @@ export class PrismaProductRepository implements ProductRepository {
       where: {
         id: product.id.toString(),
       },
-      data,
+      data: {
+        ...data,
+        attachments: {
+          connect:
+            product.attachmentIds?.map((attachment) => ({
+              id: attachment.toString(),
+            })) || [],
+        },
+      },
       include: {
         categories: true,
         attachments: true,

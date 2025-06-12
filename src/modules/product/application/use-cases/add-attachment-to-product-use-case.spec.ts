@@ -1,19 +1,19 @@
 import { makeFakeProduct } from 'src/modules/product/test/factories/make-fake-product';
 import { InMemoryProductRepository } from '../../test/repositories/in-memory-product-repository';
 import { ResourceNotFoundError } from 'src/lib/common/errors/resource-not-found.error';
-import { AddAttachmentUseCase } from './add-attachment-to-product.use-case';
+import { AddAttachmentToProductUseCase } from './add-attachment-to-product.use-case';
 import { InMemoryAttachmentRepository } from '../../test/repositories/in-memory-attachment.repository';
 import { makeFakeAttachment } from '../../test/factories/make-fake-attachment';
 
-let sut: AddAttachmentUseCase;
+let sut: AddAttachmentToProductUseCase;
 let inMemoryProductRepository: InMemoryProductRepository;
 let inMemoryAttachmentRepository: InMemoryAttachmentRepository;
 
-describe('AddAttachmentUseCase', () => {
+describe('AddAttachmentToProductUseCase', () => {
   beforeEach(() => {
     inMemoryProductRepository = new InMemoryProductRepository();
     inMemoryAttachmentRepository = new InMemoryAttachmentRepository();
-    sut = new AddAttachmentUseCase(
+    sut = new AddAttachmentToProductUseCase(
       inMemoryProductRepository,
       inMemoryAttachmentRepository,
     );

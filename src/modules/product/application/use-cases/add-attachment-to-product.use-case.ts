@@ -3,12 +3,14 @@ import { ResourceNotFoundError } from 'src/lib/common/errors/resource-not-found.
 import { ProductRepository } from '../../domain/repositories/product.repository';
 import { AttachmentRepository } from '../../domain/repositories/attachment.repository';
 import { IAddAttachmentToProduct } from '../interfaces/add-attachment-to-product';
+import { Injectable } from '@nestjs/common';
 
 type ResponseAddAttachmentUseCase = Promise<
   Either<ResourceNotFoundError, null>
 >;
 
-export class AddAttachmentUseCase {
+@Injectable()
+export class AddAttachmentToProductUseCase {
   constructor(
     private productRepository: ProductRepository,
     private attachmentRepository: AttachmentRepository,
