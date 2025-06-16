@@ -14,6 +14,10 @@ export abstract class ProductRepository {
   abstract findAll(): Promise<Product[]>;
   abstract remove(productId: string): Promise<void>;
   abstract update(product: Product): Promise<void>;
+  abstract addAttachmentToProduct({
+    attachmentIds,
+    productId,
+  }: attachmentToProductProps): Promise<void>;
   abstract removeAttachmentFromProduct({
     attachmentIds,
     productId,

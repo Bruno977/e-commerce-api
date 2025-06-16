@@ -62,6 +62,20 @@ export class InMemoryProductRepository implements ProductRepository {
     }
     this.products[productIndex] = product;
   }
+  async addAttachmentToProduct({
+    attachmentIds,
+    productId,
+  }: attachmentToProductProps) {
+    const productIndex = this.products.findIndex(
+      (product) => product.id.toString() === productId,
+    );
+    if (productIndex === -1) {
+      return;
+    }
+    const product = this.products[productIndex];
+    product.addAttachments(attachmentIds);
+    this.products[productIndex] = product;
+  }
   async removeAttachmentFromProduct({
     attachmentIds,
     productId,

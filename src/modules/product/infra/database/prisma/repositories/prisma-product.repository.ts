@@ -93,18 +93,27 @@ export class PrismaProductRepository implements ProductRepository {
       where: {
         id: product.id.toString(),
       },
-      data: {
-        ...data,
-        attachments: {
-          connect:
-            product.attachmentIds?.map((attachment) => ({
-              id: attachment.toString(),
-            })) || [],
-        },
-      },
+      data,
       include: {
         categories: true,
-        attachments: true,
+      },
+    });
+  }
+
+  async addAttachmentToProduct({
+    attachmentIds,
+    productId,
+  }: attachmentToProductProps) {
+    await this.prisma.product.update({
+      where: {
+        id: productId,
+      },
+      data: {
+        attachments: {
+          connect: attachmentIds.map((attachmentId) => ({
+            id: attachmentId.toString(),
+          })),
+        },
       },
     });
   }

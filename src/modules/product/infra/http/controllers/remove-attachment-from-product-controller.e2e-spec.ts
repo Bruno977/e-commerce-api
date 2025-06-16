@@ -77,7 +77,6 @@ describe('RemoveAttachmentFromProductController (E2E)', () => {
         attachments: true,
       },
     });
-    console.log(p);
     expect(p?.attachments.length).toBe(0);
   });
 });

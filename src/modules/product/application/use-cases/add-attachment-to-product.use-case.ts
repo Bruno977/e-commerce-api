@@ -36,9 +36,10 @@ export class AddAttachmentToProductUseCase {
 
     const attachments = attachmentsToAdd.map((attachment) => attachment.id);
 
-    product.addAttachments(attachments);
-
-    await this.productRepository.update(product);
+    await this.productRepository.addAttachmentToProduct({
+      productId: product.id.toString(),
+      attachmentIds: attachments,
+    });
 
     return right(null);
   }
