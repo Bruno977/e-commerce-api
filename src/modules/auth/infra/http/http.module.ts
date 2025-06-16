@@ -11,4 +11,4 @@ import { AuthenticateUserUseCase } from '../../application/use-cases/authenticat
   controllers: [RegisterUserController, AuthenticateUserController],
   providers: [RegisterUserUseCase, AuthenticateUserUseCase],
 })
-export class HttpModule {}
+export class AuthHttpModule {}
