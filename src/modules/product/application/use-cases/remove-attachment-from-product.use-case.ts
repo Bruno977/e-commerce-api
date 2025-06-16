@@ -4,11 +4,13 @@ import { ProductRepository } from '../../domain/repositories/product.repository'
 import { Id } from 'src/lib/common/entities/id';
 import { AttachmentRepository } from '../../domain/repositories/attachment.repository';
 import { IRemoveAttachmentFromProduct } from '../interfaces/remove-attachment-from-product';
+import { Injectable } from '@nestjs/common';
 
 type ResponseRemoveAttachmentFromProduct = Promise<
   Either<ResourceNotFoundError, null>
 >;
 
+@Injectable()
 export class RemoveAttachmentFromProductUseCase {
   constructor(
     private productRepository: ProductRepository,
@@ -38,9 +40,10 @@ export class RemoveAttachmentFromProductUseCase {
       Id.create(attachmentId.toString()),
     );
 
-    product.removeAttachments(attachments);
-
-    await this.productRepository.update(product);
+    await this.productRepository.removeAttachmentFromProduct({
+      productId: product.id.toString(),
+      attachmentIds: attachments,
+    });
 
     return right(null);
   }

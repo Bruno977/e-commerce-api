@@ -1,5 +1,8 @@
 import { Product } from '../../domain/entities/product';
-import { ProductRepository } from '../../domain/repositories/product.repository';
+import {
+  attachmentToProductProps,
+  ProductRepository,
+} from '../../domain/repositories/product.repository';
 
 export class InMemoryProductRepository implements ProductRepository {
   public products: Product[] = [];
@@ -57,6 +60,21 @@ export class InMemoryProductRepository implements ProductRepository {
     if (productIndex === -1) {
       this.products[productIndex] = product;
     }
+    this.products[productIndex] = product;
+  }
+  async removeAttachmentFromProduct({
+    attachmentIds,
+    productId,
+  }: attachmentToProductProps) {
+    const productIndex = this.products.findIndex(
+      (product) => product.id.toString() === productId,
+    );
+    if (productIndex === -1) {
+      return;
+    }
+
+    const product = this.products[productIndex];
+    product.removeAttachments(attachmentIds);
     this.products[productIndex] = product;
   }
 }

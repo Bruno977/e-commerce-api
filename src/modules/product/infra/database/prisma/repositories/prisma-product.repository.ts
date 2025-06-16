@@ -1,5 +1,8 @@
 import { Product } from 'src/modules/product/domain/entities/product';
-import { ProductRepository } from 'src/modules/product/domain/repositories/product.repository';
+import {
+  attachmentToProductProps,
+  ProductRepository,
+} from 'src/modules/product/domain/repositories/product.repository';
 import { PrismaProductMapper } from '../mapper/prisma-product.mapper';
 import { PrismaService } from 'src/lib/common/infra/database/prisma/prisma.service';
 import { Injectable } from '@nestjs/common';
@@ -102,6 +105,24 @@ export class PrismaProductRepository implements ProductRepository {
       include: {
         categories: true,
         attachments: true,
+      },
+    });
+  }
+
+  async removeAttachmentFromProduct({
+    attachmentIds,
+    productId,
+  }: attachmentToProductProps) {
+    await this.prisma.product.update({
+      where: {
+        id: productId,
+      },
+      data: {
+        attachments: {
+          disconnect: attachmentIds.map((attachmentId) => ({
+            id: attachmentId.toString(),
+          })),
+        },
       },
     });
   }

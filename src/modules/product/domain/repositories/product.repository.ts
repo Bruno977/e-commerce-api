@@ -1,4 +1,10 @@
+import { Id } from 'src/lib/common/entities/id';
 import { Product } from '../entities/product';
+
+export interface attachmentToProductProps {
+  productId: string;
+  attachmentIds: Id[];
+}
 
 export abstract class ProductRepository {
   abstract create(product: Product): Promise<void>;
@@ -8,4 +14,8 @@ export abstract class ProductRepository {
   abstract findAll(): Promise<Product[]>;
   abstract remove(productId: string): Promise<void>;
   abstract update(product: Product): Promise<void>;
+  abstract removeAttachmentFromProduct({
+    attachmentIds,
+    productId,
+  }: attachmentToProductProps): Promise<void>;
 }
