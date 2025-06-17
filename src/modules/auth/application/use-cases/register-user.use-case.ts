@@ -2,7 +2,6 @@ import { UserRepository } from '../../domain/repositories/user.repository';
 import { ResourceAlreadyExistsError } from 'src/lib/common/errors/resource-already-exists.error';
 import { IRequestRegisterUser } from '../interfaces/register-user.dto';
 import { User } from '../../domain/entities/user';
-import { NotAllowedError } from 'src/lib/common/errors/not-allowed.error';
 import { Hasher } from '../cryptography/hasher';
 import { Injectable } from '@nestjs/common';
 import { Either, left, right } from 'src/lib/common/either/either';
@@ -11,7 +10,7 @@ import { Password } from '../../domain/value-objects/password';
 import { Role } from '../../domain/value-objects/role';
 
 type ResponseRegisterUserUseCase = Promise<
-  Either<ResourceAlreadyExistsError | NotAllowedError, { user: User }>
+  Either<ResourceAlreadyExistsError, { user: User }>
 >;
 
 @Injectable()

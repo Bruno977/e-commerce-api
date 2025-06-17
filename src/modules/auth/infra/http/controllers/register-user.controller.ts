@@ -4,14 +4,24 @@ import { ValidationPipe } from '../../../../../lib/common/infra/pipes/validation
 import { RequestRegisterUserControllerDTO } from '../dto/register-user.dto';
 import { Public } from '../../auth/public';
 import { mapAppErrorToHttpException } from 'src/lib/common/http-exceptions/map-app-error-to-http-exception';
+import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
 
 @Controller('/accounts')
 @Public()
+@ApiTags('User')
 export class RegisterUserController {
   constructor(private readonly registerUserUseCase: RegisterUserUseCase) {}
 
   @Post()
   @HttpCode(201)
+  @ApiOperation({
+    summary: 'Register a new user',
+  })
+  @ApiResponse({
+    status: 201,
+    description: 'User registered successfully',
+  })
+  @ApiResponse({ status: 409, description: 'User already exists' })
   async handle(
     @Body(new ValidationPipe())
     requestRegisterUserDto: RequestRegisterUserControllerDTO,
