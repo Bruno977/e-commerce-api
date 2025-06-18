@@ -1,13 +1,12 @@
 import { Either, left, right } from 'src/lib/common/either/either';
 import { CategoryRepository } from '../../domain/repositories/category.repository';
 import { ICreateCategory } from '../interfaces/create-category';
-import { NotAllowedError } from 'src/lib/common/errors/not-allowed.error';
 import { Category } from '../../domain/entities/category';
 import { Injectable } from '@nestjs/common';
 import { ResourceAlreadyExistsError } from 'src/lib/common/errors/resource-already-exists.error';
 
 type ResponseCreateCategoryUseCase = Promise<
-  Either<NotAllowedError | ResourceAlreadyExistsError, null>
+  Either<ResourceAlreadyExistsError, null>
 >;
 
 @Injectable()
