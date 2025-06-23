@@ -5,9 +5,17 @@ import { AuthRoles } from 'src/lib/common/infra/decorators/auth-roles.decorator'
 import { UserRole } from 'src/modules/auth/domain/enums/user-role.enum';
 import { ValidationPipe } from 'src/lib/common/infra/pipes/validation-pipe';
 import { mapAppErrorToHttpException } from 'src/lib/common/http-exceptions/map-app-error-to-http-exception';
+import {
+  ApiBearerAuth,
+  ApiOperation,
+  ApiResponse,
+  ApiTags,
+} from '@nestjs/swagger';
 
 @Controller('/products/:productId/attachments/remove')
 @AuthRoles(UserRole.ADMIN)
+@ApiTags('Product')
+@ApiBearerAuth('jwt-auth')
 export class RemoveAttachmentFromProductController {
   constructor(
     private removeAttachmentFromProduct: RemoveAttachmentFromProductUseCase,
@@ -15,6 +23,17 @@ export class RemoveAttachmentFromProductController {
 
   @Patch()
   @HttpCode(204)
+  @ApiOperation({
+    summary: 'Remove attachments from a product',
+  })
+  @ApiResponse({
+    status: 404,
+    description: 'Product not found',
+  })
+  @ApiResponse({
+    status: 401,
+    description: 'Unauthorized: Missing or invalid authentication token',
+  })
   async handle(
     @Body(new ValidationPipe())
     { attachmentIds }: RemoveAttachmentFromProductDTO,
