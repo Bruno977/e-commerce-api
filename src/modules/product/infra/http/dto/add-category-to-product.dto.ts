@@ -1,3 +1,4 @@
+import { ApiProperty } from '@nestjs/swagger';
 import { IsArray, IsUUID } from 'class-validator';
 
 export class AddCategoryToProductDTO {
@@ -5,6 +6,10 @@ export class AddCategoryToProductDTO {
   @IsUUID('4', {
     each: true,
     message: 'Each "categoryId" must be a valid UUID.',
+  })
+  @ApiProperty({
+    example: '["category1","category2"]',
+    required: true,
   })
   categoryIds: string[];
 }
