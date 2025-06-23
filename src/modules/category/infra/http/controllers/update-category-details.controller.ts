@@ -5,13 +5,33 @@ import { UpdateCategoryDetailsUseCase } from 'src/modules/category/application/u
 import { UpdateCategoryDTO } from '../dto/update-category.dto';
 import { mapAppErrorToHttpException } from 'src/lib/common/http-exceptions/map-app-error-to-http-exception';
 import { ValidationPipe } from 'src/lib/common/infra/pipes/validation-pipe';
+import {
+  ApiBearerAuth,
+  ApiOperation,
+  ApiResponse,
+  ApiTags,
+} from '@nestjs/swagger';
 
 @Controller('/categories/:id')
+@AuthRoles(UserRole.ADMIN)
+@ApiTags('Category')
+@ApiBearerAuth('jwt-auth')
 export class UpdateCategoryDetailsController {
   constructor(private updateCategoryDetails: UpdateCategoryDetailsUseCase) {}
   @Put()
-  @AuthRoles(UserRole.ADMIN)
   @HttpCode(204)
+  @ApiOperation({
+    summary: 'Update Category Details',
+  })
+  @ApiResponse({
+    status: 204,
+    description: 'Category  updated successfully',
+  })
+  @ApiResponse({ status: 404, description: 'Category not found' })
+  @ApiResponse({
+    status: 401,
+    description: 'Unauthorized: Missing or invalid authentication token',
+  })
   async handle(
     @Body(new ValidationPipe()) body: UpdateCategoryDTO,
     @Param('id') id: string,
