@@ -1,5 +1,9 @@
+import { PaginationParams } from 'src/lib/common/types/pagination-params';
 import { Category } from '../../domain/entities/category';
-import { CategoryRepository } from '../../domain/repositories/category.repository';
+import {
+  CategoryRepository,
+  PaginatedCategories,
+} from '../../domain/repositories/category.repository';
 
 export class InMemoryCategoryRepository implements CategoryRepository {
   public categories: Category[] = [];
@@ -7,8 +11,18 @@ export class InMemoryCategoryRepository implements CategoryRepository {
   async create(category: Category): Promise<void> {
     this.categories.push(category);
   }
-  async findAll(): Promise<Category[]> {
-    return this.categories;
+  async findAll(params: PaginationParams): Promise<PaginatedCategories> {
+    const { page, perPage = 20 } = params;
+    const startIndex = (page - 1) * perPage;
+    const endIndex = startIndex + perPage;
+
+    const paginatedCategories = this.categories.slice(startIndex, endIndex);
+    const totalItems = this.categories.length;
+
+    return {
+      categories: paginatedCategories,
+      totalItems,
+    };
   }
 
   async findById(id: string): Promise<Category | null> {

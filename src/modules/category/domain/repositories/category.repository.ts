@@ -1,8 +1,14 @@
+import { PaginationParams } from 'src/lib/common/types/pagination-params';
 import { Category } from '../entities/category';
+
+export interface PaginatedCategories {
+  categories: Category[];
+  totalItems: number;
+}
 
 export abstract class CategoryRepository {
   abstract create(category: Category): Promise<void>;
-  abstract findAll(): Promise<Category[]>;
+  abstract findAll(params: PaginationParams): Promise<PaginatedCategories>;
   abstract findById(id: string): Promise<Category | null>;
   abstract findByIds(ids: string[]): Promise<Category[] | null>;
   abstract findBySlug(slug: string): Promise<Category | null>;

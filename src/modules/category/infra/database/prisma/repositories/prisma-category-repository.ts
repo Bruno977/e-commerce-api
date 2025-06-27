@@ -1,8 +1,12 @@
 import { PrismaService } from 'src/lib/common/infra/database/prisma/prisma.service';
 import { Category } from 'src/modules/category/domain/entities/category';
-import { CategoryRepository } from 'src/modules/category/domain/repositories/category.repository';
+import {
+  CategoryRepository,
+  PaginatedCategories,
+} from 'src/modules/category/domain/repositories/category.repository';
 import { PrismaCategoryMapper } from '../mapper/prisma-category.mapper';
 import { Injectable } from '@nestjs/common';
+import { PaginationParams } from 'src/lib/common/types/pagination-params';
 
 @Injectable()
 export class PrismaCategoryRepository implements CategoryRepository {
@@ -13,19 +17,32 @@ export class PrismaCategoryRepository implements CategoryRepository {
     await this.prisma.category.create({ data: newCategory });
   }
 
-  async findAll(): Promise<Category[]> {
-    const categories = await this.prisma.category.findMany({
-      include: {
-        _count: {
-          select: { products: true },
+  async findAll(params: PaginationParams): Promise<PaginatedCategories> {
+    const { page, perPage } = params;
+    const take = perPage;
+    const skip = (page - 1) * take;
+
+    const [categories, totalItems] = await Promise.all([
+      this.prisma.category.findMany({
+        include: {
+          _count: {
+            select: { products: true },
+          },
         },
-      },
-    });
-    return categories.map((category) => {
+        orderBy: { createdAt: 'desc' },
+        take,
+        skip,
+      }),
+      this.prisma.category.count(),
+    ]);
+
+    const domainCategories = categories.map((category) => {
       const domainCategory = PrismaCategoryMapper.toDomain(category);
       domainCategory.updateProductCount(category._count.products);
       return domainCategory;
     });
+
+    return { categories: domainCategories, totalItems };
   }
 
   async findById(id: string): Promise<Category | null> {
