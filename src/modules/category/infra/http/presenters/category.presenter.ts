@@ -6,6 +6,8 @@ export class CategoryPresenter {
       id: category?.id.toString(),
       title: category?.title,
       slug: category?.slug.getValue(),
+      is_active: category?.isActive,
+      product_count: category?.productCount,
       description: category?.description,
       created_at: category?.createdAt,
       updated_at: category?.updatedAt,

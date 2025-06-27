@@ -27,7 +27,6 @@ export class UploadAttachmentUseCase {
     body,
   }: IUploadAttachment): UploadAttachmentsUseCaseResponse {
     if (!/^(image\/(jpeg|png))$|^application\/pdf$/.test(fileType)) {
-      console.log('Uploading attachment:', fileName, fileType);
       return left(new InvalidValueError(fileType));
     }
     const { url } = await this.attachmentStorage.upload({

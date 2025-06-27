@@ -10,6 +10,7 @@ export class PrismaCategoryMapper {
       slug: category.slug.getValue(),
       description: category.description,
       isActive: category.isActive,
+      productCount: category.productCount,
     };
   }
   static toDomain(category: PrismaCategory): Category {
@@ -19,6 +20,7 @@ export class PrismaCategoryMapper {
         slug: new Slug(category.slug),
         description: category.description,
         isActive: category.isActive,
+        productCount: category.productCount,
         createdAt: category.createdAt,
         updatedAt: category.updatedAt,
       },

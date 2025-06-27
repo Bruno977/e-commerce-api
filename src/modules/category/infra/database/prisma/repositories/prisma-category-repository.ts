@@ -14,10 +14,18 @@ export class PrismaCategoryRepository implements CategoryRepository {
   }
 
   async findAll(): Promise<Category[]> {
-    const categories = await this.prisma.category.findMany();
-    return categories.map((category) =>
-      PrismaCategoryMapper.toDomain(category),
-    );
+    const categories = await this.prisma.category.findMany({
+      include: {
+        _count: {
+          select: { products: true },
+        },
+      },
+    });
+    return categories.map((category) => {
+      const domainCategory = PrismaCategoryMapper.toDomain(category);
+      domainCategory.updateProductCount(category._count.products);
+      return domainCategory;
+    });
   }
 
   async findById(id: string): Promise<Category | null> {

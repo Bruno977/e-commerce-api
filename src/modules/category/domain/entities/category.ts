@@ -6,6 +6,7 @@ export interface CategoryProps {
   description: string;
   isActive: boolean;
   slug: Slug;
+  productCount?: number;
   createdAt: Date;
   updatedAt: Date;
 }
@@ -21,6 +22,7 @@ export class Category extends Entity<CategoryProps> {
       ...props,
       slug: props.slug ?? Slug.fromTitle(props.title),
       isActive: props.isActive ?? true,
+      productCount: props.productCount ?? 0,
       createdAt: props.createdAt ?? new Date(),
       updatedAt: props.updatedAt ?? new Date(),
     });
@@ -40,11 +42,18 @@ export class Category extends Entity<CategoryProps> {
   get slug() {
     return this.props.slug;
   }
+  get productCount() {
+    return this.props.productCount;
+  }
   get createdAt() {
     return this.props.createdAt;
   }
   get updatedAt() {
     return this.props.updatedAt;
+  }
+  updateProductCount(count: number) {
+    this.props.productCount = count;
+    this.updateTimestamps();
   }
   updateTitle(title: string) {
     this.props.title = title;

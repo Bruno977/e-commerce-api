@@ -7,6 +7,7 @@ export function makeFakeCategory(override: Partial<CategoryProps> = {}) {
   return Category.create({
     title: faker.lorem.words(3),
     description: faker.lorem.paragraph(),
+    productCount: faker.number.int({ min: 0, max: 100 }),
     ...override,
   });
 }

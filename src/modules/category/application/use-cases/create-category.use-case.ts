@@ -21,6 +21,7 @@ export class CreateCategoryUseCase {
     const newCategory = Category.create({
       title,
       description,
+
       isActive,
     });
 
