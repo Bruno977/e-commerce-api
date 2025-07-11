@@ -1,6 +1,8 @@
+import { PaginationParams } from 'src/lib/common/types/pagination-params';
 import { Product } from '../../domain/entities/product';
 import {
   attachmentToProductProps,
+  PaginatedProducts,
   ProductRepository,
 } from '../../domain/repositories/product.repository';
 
@@ -39,8 +41,18 @@ export class InMemoryProductRepository implements ProductRepository {
     return products;
   }
 
-  async findAll(): Promise<Product[]> {
-    return this.products;
+  async findAll(params: PaginationParams): Promise<PaginatedProducts> {
+    const { page, perPage = 20 } = params;
+    const startIndex = (page - 1) * perPage;
+    const endIndex = startIndex + perPage;
+
+    const paginatedCategories = this.products.slice(startIndex, endIndex);
+    const totalItems = this.products.length;
+
+    return {
+      products: paginatedCategories,
+      totalItems,
+    };
   }
 
   async remove(productId: string): Promise<void> {
