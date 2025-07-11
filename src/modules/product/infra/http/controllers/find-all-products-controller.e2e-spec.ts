@@ -25,7 +25,7 @@ describe('RemoveProductController (E2E)', () => {
     const category = await prisma.category.create({
       data: PrismaCategoryMapper.toPrisma(makeFakeCategory()),
     });
-    for (let i = 0; i < 5; i++) {
+    for (let i = 0; i < 10; i++) {
       await prisma.product.create({
         data: PrismaProductMapper.toPrisma(
           makeFakeProduct({
@@ -34,9 +34,20 @@ describe('RemoveProductController (E2E)', () => {
         ),
       });
     }
-    const result = await request(app.getHttpServer()).get('/products');
+    const result = await request(app.getHttpServer()).get(
+      `/products?page=1&perPage=5`,
+    );
     expect(result.status).toBe(200);
-    const products = await prisma.product.findMany();
-    expect(products.length).toBe(5);
+    expect(result.body).toEqual(
+      expect.objectContaining({
+        products: expect.any(Array),
+        pagination: expect.objectContaining({
+          currentPage: 1,
+          perPage: 5,
+          totalPages: 2,
+          totalItems: 10,
+        }),
+      }),
+    );
   });
 });

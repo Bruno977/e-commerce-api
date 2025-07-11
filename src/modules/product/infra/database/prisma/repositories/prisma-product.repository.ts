@@ -1,11 +1,13 @@
 import { Product } from 'src/modules/product/domain/entities/product';
 import {
   attachmentToProductProps,
+  PaginatedProducts,
   ProductRepository,
 } from 'src/modules/product/domain/repositories/product.repository';
 import { PrismaProductMapper } from '../mapper/prisma-product.mapper';
 import { PrismaService } from 'src/lib/common/infra/database/prisma/prisma.service';
 import { Injectable } from '@nestjs/common';
+import { PaginationParams } from 'src/lib/common/types/pagination-params';
 
 @Injectable()
 export class PrismaProductRepository implements ProductRepository {
@@ -68,17 +70,28 @@ export class PrismaProductRepository implements ProductRepository {
     }
     return products.map((product) => PrismaProductMapper.toDomain(product));
   }
-  async findAll(): Promise<Product[]> {
-    const products = await this.prisma.product.findMany({
-      include: {
-        categories: true,
-        attachments: true,
-      },
-    });
-    if (!products) {
-      return [];
-    }
-    return products.map((product) => PrismaProductMapper.toDomain(product));
+  async findAll(params: PaginationParams): Promise<PaginatedProducts> {
+    const { page, perPage } = params;
+    const take = perPage;
+    const skip = (page - 1) * take;
+
+    const [products, totalItems] = await Promise.all([
+      this.prisma.product.findMany({
+        include: {
+          categories: true,
+          attachments: true,
+        },
+        orderBy: { createdAt: 'desc' },
+        take,
+        skip,
+      }),
+      this.prisma.product.count(),
+    ]);
+    const domainProducts = products.map((product) =>
+      PrismaProductMapper.toDomain(product),
+    );
+
+    return { products: domainProducts, totalItems };
   }
   async remove(productId: string): Promise<void> {
     await this.prisma.product.delete({
